@@ -10,7 +10,6 @@ public class Dice implements Comparable<Dice>
 	public Dice( DiceState s)
 	{
 		state = s;
-		number = 0;
 	}
 
 	public Dice(int n, DiceState s)
