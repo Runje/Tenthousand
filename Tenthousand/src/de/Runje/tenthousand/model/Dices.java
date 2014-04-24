@@ -66,8 +66,67 @@ public class Dices {
 				result.add(new ValuePair(Value.STRAIGHT, straight));
 				return result;
 			}
-		};
+		}
+		
+		//look if there are other points
+		ArrayList<Integer> countDices = countDices();
+		for (int i = 0; i < 6; ++i) {
+			int diceValue = i + 1;
+			int numberOfSameValue = countDices.get(i);
+			if (numberOfSameValue == 0) {
+				continue;
+			}
+			if (numberOfSameValue > 2) {
+				if (numberOfSameValue == 3) {
+					result.add(new ValuePair(Value.THREE_OF_A_KIND, diceValue));
+				} else if (numberOfSameValue == 4) {
+					result.add(new ValuePair(Value.FOUR_OF_A_KIND, diceValue));
+				} else if (numberOfSameValue == 5) {
+					result.add(new ValuePair(Value.FIVE_OF_A_KIND, diceValue));
+				} else {
+					//can't be
+					assert(false);
+				}
+			} else if (diceValue == 1) {
+				if (numberOfSameValue == 1) {
+					result.add(new ValuePair(Value.ONE));
+				} else {
+					//must be two
+					result.add(new ValuePair(Value.ONE));
+					result.add(new ValuePair(Value.ONE));
+				}
+			} else if (diceValue == 5) {
+				if (numberOfSameValue == 1) {
+					result.add(new ValuePair(Value.FIVE));
+				} else {
+					//must be two
+					result.add(new ValuePair(Value.FIVE));
+					result.add(new ValuePair(Value.FIVE));
+				}
+			}
+		}
 		return result;
+	}
+	
+	/**
+	 * Counts the amount of one number in all dices.
+	 * @return array of integer. Value n in 0 means that n ones are thrown.
+	 */
+	private ArrayList<Integer> countDices() {
+		ArrayList<Integer> counts = new ArrayList<Integer>();
+		//Initialize all counts with 0
+		for (int i = 0; i < 6; ++i) {
+			counts.add(0);
+		}
+		for(int i=0; i< NUMBER_OF_DICES; ++i) {
+			if (dices.get(i).getState() == DiceState.FREE) {
+				int old = counts.get(dices.get(i).getValue() - 1);
+				//increment value
+				counts.set(dices.get(i).getValue() - 1, old + 1);
+			}
+		}
+		
+		return counts;
 	}
 	
 	/**
