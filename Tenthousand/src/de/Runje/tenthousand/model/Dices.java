@@ -8,6 +8,28 @@ public class Dices {
 	public static final int NUMBER_OF_DICES = 5;
 
 	private ArrayList<Dice> dices;
+	/**
+	 * ValuePairs from dices with status "FIX"
+	 */
+	private ArrayList<ValuePair> oldValuePairs;
+	
+	/**
+	 * ValuePairs from dices with status "FREE"
+	 */
+	private ArrayList<ValuePair> newValuePairs;
+	
+	/**
+	 * @return the valuePairs
+	 */
+	public ArrayList<ValuePair> getOldValuePairs() {
+		return oldValuePairs;
+	}
+
+	public ArrayList<ValuePair> getNewValuePairs() {
+		return newValuePairs;
+	}
+	
+	private int rollCount = 0;
 	public Dices() {
 		this.dices = new ArrayList<Dice>();
 		for(int i=0; i< NUMBER_OF_DICES; ++i ) {
@@ -34,12 +56,29 @@ public class Dices {
 	 * roll all FREE dices
 	 */
 	public void roll() {
+		//fix dices with points before roll
+		fixDices();
 		for(int i=0; i< NUMBER_OF_DICES; ++i ) {
 			if (dices.get(i).getState() == DiceState.FREE) {
 				dices.get(i).roll();
 			}
 		}
 		Collections.sort(dices);
+		rollCount++;
+		updateValuePairs();
+	}
+
+	/**
+	 * Updates the member valuePairs
+	 */
+	public void updateValuePairs() {
+		newValuePairs = determineValuePairs();
+		if (oldValuePairs == null) {
+			oldValuePairs = newValuePairs;
+		} else {
+			//add new ValuePairs to old ones
+			oldValuePairs.addAll(newValuePairs);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -50,10 +89,12 @@ public class Dices {
 		return "Dices [dices=" + dices + "]";
 	}
 	
+	private void fixDices() {
+		
+	}
 	/**
-	 * Only calc points from FREE dices
-	 * @param dices
-	 * @return
+	 * Only calc valuePairs from FREE dices
+	 * @return List of new Value Pairs
 	 */
 	public ArrayList<ValuePair> determineValuePairs() {
 		assert(dices.size() <= 5);
