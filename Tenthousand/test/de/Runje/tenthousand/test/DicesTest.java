@@ -169,20 +169,20 @@ public class DicesTest {
 
 		ArrayList<Dice> dices = new ArrayList<Dice>();
 		dices.add(new Dice(1, DiceState.FIX));
-		dices.add(new Dice(2, DiceState.FREE));
-		dices.add(new Dice(3, DiceState.FREE));
-		dices.add(new Dice(4, DiceState.FREE));
-		dices.add(new Dice(5, DiceState.FREE));
+		dices.add(new Dice(2, DiceState.NO_POINTS));
+		dices.add(new Dice(3, DiceState.NO_POINTS));
+		dices.add(new Dice(4, DiceState.NO_POINTS));
+		dices.add(new Dice(5, DiceState.NO_POINTS));
 		Dices noStraight3 = new Dices(dices);
 		result = noStraight3.determineValuePairs();
 		assertFalse(result.contains(oneStraight));
 		assertFalse(result.contains(twoStraight));
 
 		dices = new ArrayList<Dice>();
-		dices.add(new Dice(2, DiceState.FREE));
-		dices.add(new Dice(3, DiceState.FREE));
-		dices.add(new Dice(4, DiceState.FREE));
-		dices.add(new Dice(5, DiceState.FREE));
+		dices.add(new Dice(2, DiceState.NO_POINTS));
+		dices.add(new Dice(3, DiceState.NO_POINTS));
+		dices.add(new Dice(4, DiceState.NO_POINTS));
+		dices.add(new Dice(5, DiceState.NO_POINTS));
 		dices.add(new Dice(6, DiceState.FIX));
 		Dices noStraight4 = new Dices(dices);
 		result = noStraight4.determineValuePairs();

@@ -3,37 +3,38 @@ package de.Runje.tenthousand.model;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import de.Runje.tenthousand.logger.LogLevel;
+import de.Runje.tenthousand.logger.Logger;
+
 public class Dices {
 	
 	public static final int NUMBER_OF_DICES = 5;
 
+	//TODO: What to do with the Rules?
+	private Rules rules = new Rules();
 	private ArrayList<Dice> dices;
 	/**
-	 * ValuePairs from dices with status "FIX"
+	 * @return the dices
 	 */
-	private ArrayList<ValuePair> oldValuePairs;
-	
+	public ArrayList<Dice> getDices() {
+		return dices;
+	}
+
 	/**
 	 * ValuePairs from dices with status "FREE"
 	 */
 	private ArrayList<ValuePair> newValuePairs;
 	
-	/**
-	 * @return the valuePairs
-	 */
-	public ArrayList<ValuePair> getOldValuePairs() {
-		return oldValuePairs;
-	}
-
 	public ArrayList<ValuePair> getNewValuePairs() {
 		return newValuePairs;
 	}
 	
-	private int rollCount = 0;
+	private int newPoints = 0;
+	private int allPoints = 0;
 	public Dices() {
 		this.dices = new ArrayList<Dice>();
 		for(int i=0; i< NUMBER_OF_DICES; ++i ) {
-			dices.add(new Dice(DiceState.FREE));
+			dices.add(new Dice(DiceState.NO_POINTS));
 		}
 	}
 	
@@ -44,12 +45,10 @@ public class Dices {
 		dices.add(new Dice(n3));
 		dices.add(new Dice(n4));
 		dices.add(new Dice(n5));
-		Collections.sort(dices);
 	}
 	
 	public Dices(ArrayList<Dice> dices) {
 		this.dices = dices;
-		Collections.sort(dices);
 	}
 	
 	/**
@@ -57,28 +56,99 @@ public class Dices {
 	 */
 	public void roll() {
 		//fix dices with points before roll
-		fixDices();
+		fix();
+		if (areAllFixed()) {
+			Logger.log(LogLevel.INFO, "Dices", "All Dices are fixed. Resetting them...");
+			resetJustDices();
+		}
+		
 		for(int i=0; i< NUMBER_OF_DICES; ++i ) {
-			if (dices.get(i).getState() == DiceState.FREE) {
+			if (dices.get(i).getState() == DiceState.NO_POINTS) {
 				dices.get(i).roll();
 			}
 		}
-		Collections.sort(dices);
-		rollCount++;
 		updateValuePairs();
+		updatePoints();
+		updateStates();
 	}
+
+	
+	public void resetJustDices() {
+		for (Dice dice : dices) {
+			dice.reset();
+		}	
+	}
+
+	private void updateStates() {
+		//Set all countable dices to NO_POINTS
+		for (Dice dice : dices) {
+			if (dice.isCountable()) {
+				dice.setState(DiceState.NO_POINTS);
+			}
+		}
+		for (ValuePair valuePair : newValuePairs) {
+			switch (valuePair.value) {
+			case FIVE:
+				setNoPoints(5);
+				break;
+			case FIVE_OF_A_KIND:
+				setNoPoints(valuePair.dice);
+				setNoPoints(valuePair.dice);
+				setNoPoints(valuePair.dice);
+				setNoPoints(valuePair.dice);
+				setNoPoints(valuePair.dice);
+				break;
+			case FOUR_OF_A_KIND:
+				setNoPoints(valuePair.dice);
+				setNoPoints(valuePair.dice);
+				setNoPoints(valuePair.dice);
+				setNoPoints(valuePair.dice);
+				break;
+			case ONE:
+				setNoPoints(1);
+				break;
+			case STRAIGHT:
+				setNoPoints(valuePair.dice);
+				setNoPoints(valuePair.dice + 1);
+				setNoPoints(valuePair.dice + 2);
+				setNoPoints(valuePair.dice + 3);
+				setNoPoints(valuePair.dice + 4);
+				break;
+			case THREE_OF_A_KIND:
+				setNoPoints(valuePair.dice);
+				setNoPoints(valuePair.dice);
+				setNoPoints(valuePair.dice);
+				break;
+			default:
+				break;
+			}
+		}
+	}
+
+	private void setNoPoints(int value) {
+		boolean test = false;
+		for (Dice dice : dices) {
+			if (dice.getState() == DiceState.NO_POINTS && dice.getValue() == value) {
+				test = true;
+				dice.setState(DiceState.POINTS);
+				break;
+			}
+		}
+		//we must be one time in the if
+		assert(test);
+	}
+
+	private void updatePoints() {
+		this.allPoints += this.newPoints;
+		this.newPoints = rules.calcPoints(newValuePairs);		
+	}
+	
 
 	/**
 	 * Updates the member valuePairs
 	 */
 	public void updateValuePairs() {
 		newValuePairs = determineValuePairs();
-		if (oldValuePairs == null) {
-			oldValuePairs = newValuePairs;
-		} else {
-			//add new ValuePairs to old ones
-			oldValuePairs.addAll(newValuePairs);
-		}
 	}
 
 	/* (non-Javadoc)
@@ -89,8 +159,15 @@ public class Dices {
 		return "Dices [dices=" + dices + "]";
 	}
 	
-	private void fixDices() {
-		
+	/**
+	 * Fix all dices with state "POINTS"
+	 */
+	public void fix() {
+		for (Dice dice : dices) {
+			if (dice.isPoints()) {
+				dice.setState(DiceState.FIX);
+			} 
+		}
 	}
 	/**
 	 * Only calc valuePairs from FREE dices
@@ -98,6 +175,9 @@ public class Dices {
 	 */
 	public ArrayList<ValuePair> determineValuePairs() {
 		assert(dices.size() <= 5);
+		//copy original list, because it shouldn't be sorted (There should be a better way?)
+		ArrayList<Dice> tempDices = new ArrayList<Dice>(dices);
+		Collections.sort(dices);
 		ArrayList<ValuePair> result = new ArrayList<ValuePair>();
 		//only calc if straight is "activated"
 		//look if straight is activated for the active game
@@ -146,11 +226,15 @@ public class Dices {
 				}
 			}
 		}
+		dices = tempDices;
+		
+		Logger.log(LogLevel.DEBUG, "Dices", "The dices are " + dices);
+		Logger.log(LogLevel.DEBUG, "Dices", "The value pairs are " + result);
 		return result;
 	}
 	
 	/**
-	 * Counts the amount of one number in all dices.
+	 * Counts the amount of one number in all dices.(with state POINTS or NO_POINTS)
 	 * @return array of integer. Value n in 0 means that n ones are thrown.
 	 */
 	private ArrayList<Integer> countDices() {
@@ -160,7 +244,7 @@ public class Dices {
 			counts.add(0);
 		}
 		for(int i=0; i< NUMBER_OF_DICES; ++i) {
-			if (dices.get(i).getState() == DiceState.FREE) {
+			if (dices.get(i).isCountable()) {
 				int old = counts.get(dices.get(i).getValue() - 1);
 				//increment value
 				counts.set(dices.get(i).getValue() - 1, old + 1);
@@ -171,7 +255,7 @@ public class Dices {
 	}
 	
 	/**
-	 * Determines if there is a straight (only for FREE dices)
+	 * Determines if there is a straight (only for POINTS or NO_POINTS dices)
 	 * @param dices
 	 * @return returns 0 if there is no straight, else it returns the first dice of the straight
 	 */
@@ -186,12 +270,12 @@ public class Dices {
 			return 0;
 		}
 		int last = dices.get(0).getValue();
-		if (!dices.get(0).isFree()) {
+		if (!dices.get(0).isCountable()) {
 			return 0;
 		}
 		for(int i = 1; i < 5; ++i){
 			int current = dices.get(i).getValue();
-			if (last != current - 1 || !dices.get(i).isFree() )
+			if (last != current - 1 || !dices.get(i).isCountable() )
 			{
 				return 0;
 			}
@@ -199,4 +283,45 @@ public class Dices {
 		}
 		return dices.get(0).getValue();
 	}
+
+	public void fixDice(int index) {
+		this.dices.get(index).setState(DiceState.FIX);
+		//TODO: fix all dices which are "connected"
+	}
+	
+	public void freeDice(int index) {
+		this.dices.get(index).setState(DiceState.NO_POINTS);
+		//TODO: free all dices which are "connected"
+		
+	}
+
+	public int getAllPoints() {
+
+		return allPoints;
+	}
+
+	public int getNewPoints() {
+		return newPoints;
+	}
+
+	public void resetAll() {
+		resetJustDices();
+		resetPoints();
+	}
+
+	public void resetPoints() {
+		allPoints = 0;
+		newPoints = 0;		
+	}
+
+	public boolean areAllFixed() {
+		boolean allFixed = true;
+		for (Dice dice : dices) {
+			if (dice.hasNoPoints()) {
+				allFixed = false;
+			}
+		}
+		return allFixed;
+	}
+
 }

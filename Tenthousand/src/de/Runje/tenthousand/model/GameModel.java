@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class GameModel {
 
 	private ArrayList<Player> players;
+	int indexPlayingPlayer = 0;
 	private Rules rules;
 	public Dices dices;
 	
@@ -24,15 +25,12 @@ public class GameModel {
 		this.dices = new Dices();
 	}
 	
-	public void start() {
-		
-		determineOrder();
-		Dices dices = new Dices();
-		while (!isFinished()) {
-			for (Player player : players) {
-				player.makeTurn(dices);
-			}
-		}
+
+	/**
+	 * @return the players
+	 */
+	public ArrayList<Player> getPlayers() {
+		return players;
 	}
 
 	private void determineOrder() {
@@ -45,8 +43,16 @@ public class GameModel {
 	 * @return
 	 */
 	public Player getPlayingPlayer() {
-		// TODO
-		return players.get(0);
+		return players.get(indexPlayingPlayer);
 	}
+
+	public void nextPlayer() {
+		indexPlayingPlayer = (indexPlayingPlayer + 1) % players.size();
+	}
+
+	public boolean isPlayerFinished() {
+		return getPlayingPlayer().isFinished();
+	}
+	
 
 }

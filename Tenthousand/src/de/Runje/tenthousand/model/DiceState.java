@@ -1,5 +1,5 @@
 package de.Runje.tenthousand.model;
 
 public enum DiceState {
-	FIX, FREE
+	FIX, NO_POINTS, POINTS, FORCE_NO_POINTS
 }

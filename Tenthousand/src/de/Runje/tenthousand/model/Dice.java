@@ -48,12 +48,13 @@ public class Dice implements Comparable<Dice>
 
 	public Dice(int n)
 	{
-		state = DiceState.FREE;
+		state = DiceState.NO_POINTS;
 		number = n;
 	}
 	
-	public boolean isFree() {
-		return this.state == DiceState.FREE;
+	//Determines if this dice should be considered to calculate points
+	public boolean isCountable() {
+		return this.state == DiceState.NO_POINTS || this.state == DiceState.POINTS;
 	}
 
 	/**
@@ -90,5 +91,18 @@ public class Dice implements Comparable<Dice>
 	@Override
 	public String toString() {
 		return "Dice [state=" + state + ", value=" + number + "]";
+	}
+
+	public boolean isPoints() {
+		return (state == DiceState.POINTS);
+	}
+
+	public void reset() {
+		state = DiceState.NO_POINTS;
+		number = 0;
+	}
+
+	public boolean hasNoPoints() {
+		return state == DiceState.FORCE_NO_POINTS || state == DiceState.NO_POINTS;
 	}
 }
