@@ -30,6 +30,7 @@ public class GameView implements IObserver{
 	private JTextArea textPoints;
 	private JLabel labelActualPoints;
 	private JButton buttonTakeOver;
+	private JButton buttonMerge;
 	public GameView(Controller controller) {
 		this.controller = controller;
 		//1. Create the frame.
@@ -46,6 +47,10 @@ public class GameView implements IObserver{
 		buttonTakeOver = new JButton("Take over");
 		buttonTakeOver.setVisible(false);
 		buttonTakeOver.addActionListener(new ALTakeOver(controller));
+		buttonMerge = new JButton("Merge two Fives");
+		buttonMerge.setEnabled(false);
+		buttonMerge.addActionListener(new ALMerge(controller));
+		panelActions.add(buttonMerge);
 		panelActions.add(buttonTakeOver);
 		panelActions.add(buttonNext);
 		panelActions.add(buttonRoll);
@@ -84,6 +89,7 @@ public class GameView implements IObserver{
 		buttonRoll.setEnabled(controller.isPossibleToRoll());
 		buttonTakeOver.setVisible(controller.isPossibleToTakeOver());
 		buttonNext.setEnabled(controller.nextIsPossible());
+		buttonMerge.setEnabled(controller.isPossibleToMerge());
 	}
 
 	private void updateDices() {
@@ -91,7 +97,7 @@ public class GameView implements IObserver{
 		Dices dices = controller.getDices();
 		for (int i = 0; i < dices.getDices().size(); i++) {
 			Dice dice = dices.getDices().get(i);
-			int value = dice.getValue();
+			int value = dice.getNumber();
 			DiceState state = dice.getState();
 			buttonDices.get(i).setText(Integer.toString(value));
 			Color color = Color.BLUE;

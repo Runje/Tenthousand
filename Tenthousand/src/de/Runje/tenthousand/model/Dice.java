@@ -69,12 +69,7 @@ public class Dice implements Comparable<Dice>
 	public void setState(DiceState state) {
 		this.state = state;
 	}
-	/**
-	 * @return the value
-	 */
-	public int getValue() {
-		return number;
-	}
+
 	public int roll()
 	{
 		Random random = new Random();
@@ -90,7 +85,7 @@ public class Dice implements Comparable<Dice>
 	 */
 	@Override
 	public String toString() {
-		return "Dice [state=" + state + ", value=" + number + "]";
+		return "Dice [state=" + state + ", number=" + number + "]";
 	}
 
 	public boolean isPoints() {
@@ -104,5 +99,23 @@ public class Dice implements Comparable<Dice>
 
 	public boolean hasNoPoints() {
 		return state == DiceState.FORCE_NO_POINTS || state == DiceState.NO_POINTS;
+	}
+
+	/**
+	 * @return the number
+	 */
+	public int getNumber() {
+		return number;
+	}
+
+	/**
+	 * @param number the number to set
+	 */
+	public void setNumber(int number) {
+		this.number = number;
+	}
+
+	public boolean hasNumber() {
+		return number!=0;
 	}
 }

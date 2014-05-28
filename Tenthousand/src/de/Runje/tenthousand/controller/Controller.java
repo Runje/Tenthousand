@@ -44,6 +44,7 @@ public class Controller extends Observable {
 		} else if (state == DiceState.FORCE_NO_POINTS) {
 			dice.setState(DiceState.POINTS);
 		}
+		model.dices.determineValuePairs();
 		notifyObservers();
 	}
 
@@ -95,4 +96,14 @@ public class Controller extends Observable {
 	public boolean nextIsPossible() {
 		return !model.getPlayingPlayer().hasNotRolled();
 	}
+
+	public void mergeTwoFives() {
+		model.dices.mergeTwoFives();
+		notifyObservers();
+	}
+	
+	public boolean isPossibleToMerge() {
+		return model.dices.isPossibleToMergeTwoFives();
+	}
+	
 }

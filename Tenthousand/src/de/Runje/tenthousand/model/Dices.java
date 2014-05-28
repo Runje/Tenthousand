@@ -128,7 +128,7 @@ public class Dices {
 	private void setNoPoints(int value) {
 		boolean test = false;
 		for (Dice dice : dices) {
-			if (dice.getState() == DiceState.NO_POINTS && dice.getValue() == value) {
+			if (dice.getState() == DiceState.NO_POINTS && dice.getNumber() == value) {
 				test = true;
 				dice.setState(DiceState.POINTS);
 				break;
@@ -244,10 +244,10 @@ public class Dices {
 			counts.add(0);
 		}
 		for(int i=0; i< NUMBER_OF_DICES; ++i) {
-			if (dices.get(i).isCountable()) {
-				int old = counts.get(dices.get(i).getValue() - 1);
+			if (dices.get(i).isCountable() && dices.get(i).hasNumber()) {
+				int old = counts.get(dices.get(i).getNumber() - 1);
 				//increment value
-				counts.set(dices.get(i).getValue() - 1, old + 1);
+				counts.set(dices.get(i).getNumber() - 1, old + 1);
 			}
 		}
 		
@@ -265,23 +265,23 @@ public class Dices {
 		}
 		
 		//straight has to begin with 1 or 2
-		if (dices.get(0).getValue() > 2)
+		if (dices.get(0).getNumber() > 2)
 		{
 			return 0;
 		}
-		int last = dices.get(0).getValue();
+		int last = dices.get(0).getNumber();
 		if (!dices.get(0).isCountable()) {
 			return 0;
 		}
 		for(int i = 1; i < 5; ++i){
-			int current = dices.get(i).getValue();
+			int current = dices.get(i).getNumber();
 			if (last != current - 1 || !dices.get(i).isCountable() )
 			{
 				return 0;
 			}
 			last = current;
 		}
-		return dices.get(0).getValue();
+		return dices.get(0).getNumber();
 	}
 
 	public void fixDice(int index) {
@@ -322,6 +322,33 @@ public class Dices {
 			}
 		}
 		return allFixed;
+	}
+
+	public void mergeTwoFives() {
+		assert(isPossibleToMergeTwoFives());
+		boolean first = true;
+		for (Dice dice : dices) {
+			if (dice.getState() != DiceState.FIX && dice.getNumber() == 5 ) {
+				if (first) {
+					dice.setNumber(1);
+					first = false;
+				} else {
+					dice.reset();
+					dice.setState(DiceState.FORCE_NO_POINTS);
+				}
+			}
+		}
+		updateValuePairs();
+	}
+	public boolean isPossibleToMergeTwoFives() {
+		int i = 0;
+		for (Dice dice : dices) {
+			if (dice.getState() != DiceState.FIX && dice.getNumber() == 5 ) {
+				i++;
+			}
+		}
+		//only possible if there are exactly two not fixed fives
+		return i == 2;
 	}
 
 }
