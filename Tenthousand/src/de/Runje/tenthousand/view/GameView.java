@@ -43,6 +43,7 @@ public class GameView implements IObserver{
 		buttonRoll = new JButton("roll");
 		buttonRoll.addActionListener(new ALRollDices(controller));
 		buttonNext = new JButton("Next");
+		buttonNext.setEnabled(false);
 		buttonNext.addActionListener(new ALNext(controller));
 		buttonTakeOver = new JButton("Take over");
 		buttonTakeOver.setVisible(false);
