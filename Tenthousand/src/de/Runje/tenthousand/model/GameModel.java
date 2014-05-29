@@ -8,12 +8,12 @@ public class GameModel extends Observable{
 
 	private ArrayList<Player> players;
 	int indexPlayingPlayer = 0;
-	private Rules rules;
 	public boolean takeover;
 	public Dices dices;
 	
 	private boolean finished;
 	public DiceHandler diceHandler;
+	public PlayerHandler playerHandler;
 	
 	/**
 	 * @return the finished
@@ -23,12 +23,12 @@ public class GameModel extends Observable{
 	}
 
 	public GameModel(ArrayList<Player> players, Rules rules) {
-		this.rules = rules;
 		this.players = players;
 		this.finished = false;
 		this.dices = new Dices();
 		this.takeover = false;
 		this.diceHandler = new DiceHandler(dices);
+		this.playerHandler = new PlayerHandler(diceHandler);
 	}
 	
 

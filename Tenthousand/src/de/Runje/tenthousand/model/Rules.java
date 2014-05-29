@@ -39,7 +39,6 @@ public class Rules {
 
 	private int calcPoints(ValuePair valuePair) {
 		int dice = valuePair.dice;
-		assert(dice > 0);
 		assert(dice < 7);
 		int points = 0;
 		switch (valuePair.value) {

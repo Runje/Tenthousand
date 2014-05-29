@@ -50,24 +50,25 @@ public class Player {
 		return name;
 	}
 
-	public void rollDices(DiceHandler diceHandler) {
-		//TODO: assert funktioniert nicht!?
-		assert(!isFinished());
-		if (rolls == 0 && !willTakeOver) {
-			Logger.log(LogLevel.INFO, "Player", name + " will not take over the dices.");
-			diceHandler.resetAll();
-		} else {
-			Logger.log(LogLevel.INFO, "Player", name + " will take over the dices.");
-			willTakeOver = false;
-		}
-		if (diceHandler.dices.areAllFixed()) {
-			rolls = 0;
-			diceHandler.dices.reset();
-		}
-		diceHandler.rollDices();
-		rolls++;
-		Logger.log(LogLevel.INFO, "Player", name + " rolls the dices for the " + rolls + ". time.");
-		checkIfFinished(diceHandler);
+	/**
+	 * @return the willTakeOver
+	 */
+	public boolean willTakeOver() {
+		return willTakeOver;
+	}
+
+	/**
+	 * @param willTakeOver the willTakeOver to set
+	 */
+	public void setWillTakeOver(boolean willTakeOver) {
+		this.willTakeOver = willTakeOver;
+	}
+
+	/**
+	 * @return the rolls
+	 */
+	public int getRolls() {
+		return rolls;
 	}
 
 	/**
@@ -77,19 +78,14 @@ public class Player {
 		this.rolls = rolls;
 	}
 
-	public void checkIfFinished(DiceHandler diceHandler) {
-		if (diceHandler.getNewPoints() == 0) {
-			rolls = 0;
-			diceHandler.resetPoints();
-			finished = true;
-			Logger.log(LogLevel.INFO, "Player", name + " is finished ( 0 points).");
-		} else if (rolls == 3 && !diceHandler.getDices().areAllFixed()) {
-			rolls = 0;
-			finished = true;
-			Logger.log(LogLevel.INFO, "Player", name + " is finished ( 3 rolls).");
-		}
-	}
 	
+	/**
+	 * @param finished the finished to set
+	 */
+	public void setFinished(boolean finished) {
+		this.finished = finished;
+	}
+
 	public void startNewMove() {
 		finished = false;
 	}

@@ -37,7 +37,7 @@ public class ActionHandler {
 
 	private void executeRoll(GameModel model) {
 		Player player = model.getPlayingPlayer();
-		player.rollDices(model.diceHandler);
+		model.playerHandler.rollDices(model.getPlayingPlayer());
 		model.takeover = false;
 		model.notifyObservers();
 	}
