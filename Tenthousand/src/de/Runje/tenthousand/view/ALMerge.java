@@ -3,6 +3,7 @@ package de.Runje.tenthousand.view;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import de.Runje.tenthousand.controller.Action;
 import de.Runje.tenthousand.controller.Controller;
 
 public class ALMerge implements ActionListener {
@@ -15,7 +16,7 @@ public class ALMerge implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		controller.mergeTwoFives();
+		controller.handleAction(Action.Merge);
 	}
 
 }

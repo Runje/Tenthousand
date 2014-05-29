@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
+import de.Runje.tenthousand.controller.Action;
 import de.Runje.tenthousand.controller.Controller;
 
 public class ALDice implements ActionListener {
@@ -18,8 +19,9 @@ public class ALDice implements ActionListener {
 	public void actionPerformed(ActionEvent arg0) {
 		// Cast safeness?
 		JButton button = (JButton) arg0.getSource();
-		System.out.println(button.getName());
-		this.controller.switchDiceState(Integer.parseInt(button.getName()));
+		Action a = Action.Switch;
+		a.index = Integer.parseInt(button.getName());
+		this.controller.handleAction(a);
 	}
 
 }

@@ -69,7 +69,6 @@ public class Dices {
 		}
 		updateValuePairs();
 		updatePoints();
-		updateStates();
 	}
 
 	
@@ -134,7 +133,7 @@ public class Dices {
 				break;
 			}
 		}
-		//we must be one time in the if
+		//we must be once in the if
 		assert(test);
 	}
 
@@ -145,10 +144,11 @@ public class Dices {
 	
 
 	/**
-	 * Updates the member valuePairs
+	 * Updates the member valuePairs and the states of the dices
 	 */
 	public void updateValuePairs() {
 		newValuePairs = determineValuePairs();
+		updateStates();
 	}
 
 	/* (non-Javadoc)

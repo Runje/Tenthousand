@@ -9,25 +9,18 @@ import de.Runje.tenthousand.model.GameModel;
 import de.Runje.tenthousand.model.Player;
 import de.Runje.tenthousand.observer.Observable;
 
-public class Controller extends Observable {
+public class Controller {
 
 
 	//Model of the game
-	private GameModel model;
-	private boolean takeOver;
+	public GameModel model;
+	public ActionHandler actionHandler;
 
 	public Controller(GameModel model) {
 		this.model = model;
-		this.takeOver = false;
+		this.actionHandler = new ActionHandler();
 	}
 
-	public void rollDices() {
-		Player player = model.getPlayingPlayer();
-		player.rollDices(model.dices);
-		takeOver = false;
-		notifyObservers();
-	}
-	
 	public Dices getDices() {
 		return model.dices;
 	}
@@ -36,43 +29,10 @@ public class Controller extends Observable {
 		return model.getPlayingPlayer().getPoints();
 	}
 
-	public void switchDiceState(int index) {
-		Dice dice = model.dices.getDices().get(index);
-		DiceState state = dice.getState();
-		if (state == DiceState.POINTS) {
-			dice.setState(DiceState.FORCE_NO_POINTS);
-		} else if (state == DiceState.FORCE_NO_POINTS) {
-			dice.setState(DiceState.POINTS);
-		}
-		model.dices.determineValuePairs();
-		notifyObservers();
-	}
-
 	public int getActualPoints() {
 		return model.dices.getAllPoints() + model.dices.getNewPoints();
 	}
 
-	public void endMove() {
-		//TODO: Make 300 constant
-		if (getActualPoints() < 300) {
-			model.dices.resetAll();
-			takeOver = false;
-		} else {
-			//add points
-			addPoints();
-			model.dices.fix();
-			takeOver = true;
-		}
-		
-		model.nextPlayer();
-		model.getPlayingPlayer().startNewMove();
-		notifyObservers();
-	}
-
-	private void addPoints() {
-		model.getPlayingPlayer().addPoints(getActualPoints());
-	}
-	
 	public String getNameOfPlayingPlayer() {
 		return model.getPlayingPlayer().getName();
 	}
@@ -90,20 +50,19 @@ public class Controller extends Observable {
 	}
 
 	public boolean isPossibleToTakeOver() {
-		return takeOver;
+		return model.takeover;
 	}
 
 	public boolean nextIsPossible() {
 		return !model.getPlayingPlayer().hasNotRolled();
 	}
 
-	public void mergeTwoFives() {
-		model.dices.mergeTwoFives();
-		notifyObservers();
-	}
-	
 	public boolean isPossibleToMerge() {
 		return model.dices.isPossibleToMergeTwoFives();
+	}
+
+	public void handleAction(Action action) {
+		actionHandler.executeAction(action, model);
 	}
 	
 }

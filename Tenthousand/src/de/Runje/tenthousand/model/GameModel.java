@@ -2,11 +2,14 @@ package de.Runje.tenthousand.model;
 
 import java.util.ArrayList;
 
-public class GameModel {
+import de.Runje.tenthousand.observer.Observable;
+
+public class GameModel extends Observable{
 
 	private ArrayList<Player> players;
 	int indexPlayingPlayer = 0;
 	private Rules rules;
+	public boolean takeover;
 	public Dices dices;
 	
 	private boolean finished;
@@ -23,6 +26,7 @@ public class GameModel {
 		this.players = players;
 		this.finished = false;
 		this.dices = new Dices();
+		this.takeover = false;
 	}
 	
 

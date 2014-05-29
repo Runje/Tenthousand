@@ -82,7 +82,7 @@ public class GameView implements IObserver{
 
 		//5. Show it.
 		frame.setVisible(true);
-		controller.addObserver(this);
+		controller.model.addObserver(this);
 	}
 	
 	private void updatePossibleMoves() {
