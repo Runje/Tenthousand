@@ -30,7 +30,7 @@ public class Controller {
 	}
 
 	public int getActualPoints() {
-		return model.dices.getAllPoints() + model.dices.getNewPoints();
+		return model.diceHandler.getAllPoints() + model.diceHandler.getNewPoints();
 	}
 
 	public String getNameOfPlayingPlayer() {
@@ -54,7 +54,7 @@ public class Controller {
 	}
 
 	public boolean isPossibleToMerge() {
-		return model.dices.isPossibleToMergeTwoFives();
+		return model.diceHandler.isPossibleToMergeTwoFives();
 	}
 
 	public void handleAction(Action action) {

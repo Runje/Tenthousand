@@ -53,39 +53,34 @@ public class Player {
 	public String getName() {
 		return name;
 	}
-	public void makeTurn(Dices dices) {
-		while(!isFinished()) {
-			rollDices(dices);
-		}
 
-	}
-	public void rollDices(Dices dices) {
+	public void rollDices(DiceHandler diceHandler) {
 		//TODO: assert funktioniert nicht!?
 		assert(!isFinished());
 		if (rolls == 0 && !willTakeOver) {
 			Logger.log(LogLevel.INFO, "Player", name + " will not take over the dices.");
-			dices.resetAll();
+			diceHandler.resetAll();
 		} else {
 			Logger.log(LogLevel.INFO, "Player", name + " will take over the dices.");
 			willTakeOver = false;
 		}
-		if (dices.areAllFixed()) {
+		if (diceHandler.dices.areAllFixed()) {
 			rolls = 0;
-			dices.resetJustDices();
+			diceHandler.dices.reset();
 		}
-		dices.roll();
+		diceHandler.rollDices();
 		rolls++;
 		Logger.log(LogLevel.INFO, "Player", name + " rolls the dices for the " + rolls + ". time.");
-		checkIfFinished(dices);
+		checkIfFinished(diceHandler);
 	}
 
-	public void checkIfFinished(Dices dices) {
-		if (dices.getNewPoints() == 0) {
+	public void checkIfFinished(DiceHandler diceHandler) {
+		if (diceHandler.getNewPoints() == 0) {
 			rolls = 0;
-			dices.resetPoints();
+			diceHandler.resetPoints();
 			finished = true;
 			Logger.log(LogLevel.INFO, "Player", name + " is finished ( 0 points).");
-		} else if (rolls == 3 && !dices.areAllFixed()) {
+		} else if (rolls == 3 && !diceHandler.getDices().areAllFixed()) {
 			rolls = 0;
 			finished = true;
 			Logger.log(LogLevel.INFO, "Player", name + " is finished ( 3 rolls).");

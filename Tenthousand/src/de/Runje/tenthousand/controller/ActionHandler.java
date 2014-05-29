@@ -36,7 +36,7 @@ public class ActionHandler {
 
 	private void executeRoll(GameModel model) {
 		Player player = model.getPlayingPlayer();
-		player.rollDices(model.dices);
+		player.rollDices(model.diceHandler);
 		model.takeover = false;
 		model.notifyObservers();
 	}
@@ -49,15 +49,15 @@ public class ActionHandler {
 		} else if (state == DiceState.FORCE_NO_POINTS) {
 			dice.setState(DiceState.POINTS);
 		}
-		model.dices.determineValuePairs();
+		model.diceHandler.determineValuePairs();
 		model.notifyObservers();
 	}
 	
 	private void executeNext(GameModel model) {
-		int points = model.dices.getAllPoints() + model.dices.getNewPoints();
+		int points = model.diceHandler.getAllPoints() + model.diceHandler.getNewPoints();
 		//TODO: Make 300 constant
 		if (points < 300) {
-			model.dices.resetAll();
+			model.diceHandler.resetAll();
 			model.takeover = false;
 		} else {
 			//add points
@@ -72,7 +72,7 @@ public class ActionHandler {
 	}
 	
 	private void executeMerge(GameModel model) {
-		model.dices.mergeTwoFives();
+		model.diceHandler.mergeTwoFives();
 		model.notifyObservers();
 	}
 

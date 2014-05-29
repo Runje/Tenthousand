@@ -13,6 +13,7 @@ public class GameModel extends Observable{
 	public Dices dices;
 	
 	private boolean finished;
+	public DiceHandler diceHandler;
 	
 	/**
 	 * @return the finished
@@ -27,6 +28,7 @@ public class GameModel extends Observable{
 		this.finished = false;
 		this.dices = new Dices();
 		this.takeover = false;
+		this.diceHandler = new DiceHandler(dices);
 	}
 	
 

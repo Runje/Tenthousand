@@ -118,4 +118,10 @@ public class Dice implements Comparable<Dice>
 	public boolean hasNumber() {
 		return number!=0;
 	}
+	
+	public boolean isRollable() {
+		return (state == DiceState.NO_POINTS || state == DiceState.FORCE_NO_POINTS);
+	}
+	
+	
 }

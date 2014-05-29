@@ -16,7 +16,6 @@ public class ALTakeOver implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		controller.handleAction(Action.Takeover);
-
 	}
 
 }
