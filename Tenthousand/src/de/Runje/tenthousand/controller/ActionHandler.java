@@ -2,7 +2,6 @@ package de.Runje.tenthousand.controller;
 
 import de.Runje.tenthousand.model.Dice;
 import de.Runje.tenthousand.model.DiceState;
-import de.Runje.tenthousand.model.Dices;
 import de.Runje.tenthousand.model.GameModel;
 import de.Runje.tenthousand.model.Player;
 
@@ -23,11 +22,16 @@ public class ActionHandler {
 			executeSwitch(model, action.index);
 			break;
 		case Takeover:
+			executeTakeover(model);
 			break;
 		default:
 			break;
 		
 		}
+	}
+
+	private void executeTakeover(GameModel model) {
+		model.getPlayingPlayer().takeOver();
 	}
 
 	private void executeRoll(GameModel model) {

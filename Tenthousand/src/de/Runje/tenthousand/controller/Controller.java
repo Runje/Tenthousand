@@ -45,10 +45,6 @@ public class Controller {
 		return !model.isPlayerFinished();
 	}
 
-	public void takeOver() {
-		model.getPlayingPlayer().takeOver();
-	}
-
 	public boolean isPossibleToTakeOver() {
 		return model.takeover;
 	}
