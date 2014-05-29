@@ -14,6 +14,7 @@ public class GameModel extends Observable{
 	private boolean finished;
 	public DiceHandler diceHandler;
 	public PlayerHandler playerHandler;
+	private boolean gameFinished;
 	
 	/**
 	 * @return the finished
@@ -62,6 +63,25 @@ public class GameModel extends Observable{
 
 	public void nextPlayer() {
 		indexPlayingPlayer = (indexPlayingPlayer + 1) % players.size();
+		if (indexPlayingPlayer == 0) {
+			for (Player player : players) {
+				if (player.getPoints() >= Rules.WinPoints) {
+					endGame();
+				}
+			}
+		}
+	}
+
+	private void endGame() {
+		gameFinished = true;
+		
+	}
+
+	/**
+	 * @return the gameFinished
+	 */
+	public boolean isGameFinished() {
+		return gameFinished;
 	}
 
 	public boolean isPlayerFinished() {

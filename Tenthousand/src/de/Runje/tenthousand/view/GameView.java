@@ -129,6 +129,10 @@ public class GameView implements IObserver{
 			textPoints.append(player.getName() + "\t" + player.getPoints() + "\n");
 		}
 		textPoints.append("Turn: " + controller.getNameOfPlayingPlayer());
+		
+		if (controller.model.isGameFinished()) {
+			textPoints.append("\nGame has ended");
+		}
 		int actualPoints = controller.getActualPoints();
 		labelActualPoints.setText("Points: " + actualPoints ) ;
 	}
