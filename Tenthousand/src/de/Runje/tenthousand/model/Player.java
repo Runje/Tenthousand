@@ -10,8 +10,6 @@ public class Player {
 	 */
 	private int allPoints;
 	
-	private Rules rules;
-
 	private boolean willTakeOver;
 	/**
 	 * Name of the Player
@@ -25,11 +23,9 @@ public class Player {
 	 */
 	private boolean finished;
 	
-	//TODO: Add rule as parameter
 	Player(String name) {
 		this.name = name;
 		this.allPoints = 0;
-		this.rules = new Rules();
 		this.rolls = 0;
 		this.finished = false;
 		this.willTakeOver = false;
@@ -72,6 +68,13 @@ public class Player {
 		rolls++;
 		Logger.log(LogLevel.INFO, "Player", name + " rolls the dices for the " + rolls + ". time.");
 		checkIfFinished(diceHandler);
+	}
+
+	/**
+	 * @param rolls the rolls to set
+	 */
+	public void setRolls(int rolls) {
+		this.rolls = rolls;
 	}
 
 	public void checkIfFinished(DiceHandler diceHandler) {

@@ -100,6 +100,8 @@ public class DiceHandler {
 	public void rollDices() {
 		// fix dices with points before roll
 		dices.fix();
+		allPoints += newPoints;
+		newPoints = 0;
 		if (dices.areAllFixed()) {
 			Logger.log(LogLevel.INFO, "Dices",
 					"All Dices are fixed. Resetting them...");
@@ -119,7 +121,7 @@ public class DiceHandler {
 		updateStates();
 	}
 
-	private void updateStates() {
+	public void updateStates() {
 		// Set all countable dices to NO_POINTS
 		for (Dice dice : dices.getDices()) {
 			if (dice.isCountable()) {
@@ -313,7 +315,6 @@ public class DiceHandler {
 	}
 
 	public void updatePoints() {
-		this.allPoints += this.newPoints;
 		this.newPoints = rules.calcPoints(newValuePairs);
 	}
 

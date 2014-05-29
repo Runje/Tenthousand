@@ -4,6 +4,7 @@ import java.util.List;
 
 public class Rules {
 	
+	public final static int MinPoints = 300; 
 	private boolean straightActive;
 	
 	public Rules(boolean straightActive) {

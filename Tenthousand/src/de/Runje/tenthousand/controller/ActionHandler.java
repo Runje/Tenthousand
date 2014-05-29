@@ -4,6 +4,7 @@ import de.Runje.tenthousand.model.Dice;
 import de.Runje.tenthousand.model.DiceState;
 import de.Runje.tenthousand.model.GameModel;
 import de.Runje.tenthousand.model.Player;
+import de.Runje.tenthousand.model.Rules;
 
 public class ActionHandler {
 
@@ -49,14 +50,15 @@ public class ActionHandler {
 		} else if (state == DiceState.FORCE_NO_POINTS) {
 			dice.setState(DiceState.POINTS);
 		}
-		model.diceHandler.determineValuePairs();
+		model.diceHandler.updateValuePairs();
+		model.diceHandler.updatePoints();
+		model.diceHandler.updateStates();
 		model.notifyObservers();
 	}
 	
 	private void executeNext(GameModel model) {
 		int points = model.diceHandler.getAllPoints() + model.diceHandler.getNewPoints();
-		//TODO: Make 300 constant
-		if (points < 300) {
+		if (points < Rules.MinPoints) {
 			model.diceHandler.resetAll();
 			model.takeover = false;
 		} else {
@@ -66,6 +68,7 @@ public class ActionHandler {
 			model.takeover = true;
 		}
 		
+		model.getPlayingPlayer().setRolls(0);
 		model.nextPlayer();
 		model.getPlayingPlayer().startNewMove();
 		model.notifyObservers();
