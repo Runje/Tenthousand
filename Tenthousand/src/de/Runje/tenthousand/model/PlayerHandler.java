@@ -9,11 +9,9 @@ public class PlayerHandler {
 
 	public PlayerHandler(DiceHandler diceHandler) {
 		this.diceHandler = diceHandler;
-		
 	}
 	
 	public void rollDices(Player player) {
-		//TODO: assert funktioniert nicht!?
 		assert(!player.isFinished());
 		if (player.getRolls() == 0 && !player.willTakeOver()) {
 			Logger.log(LogLevel.INFO, "Player", player.getName() + " will not take over the dices.");
@@ -32,7 +30,7 @@ public class PlayerHandler {
 		checkIfFinished(player);
 	}
 	
-	public void checkIfFinished(Player player) {
+	private void checkIfFinished(Player player) {
 		if (diceHandler.getNewPoints() == 0) {
 			player.setRolls(0);
 			diceHandler.resetPoints();
@@ -43,6 +41,14 @@ public class PlayerHandler {
 			player.setFinished(true);
 			Logger.log(LogLevel.INFO, "Player", player.getName() + " is finished ( 3 rolls).");
 		}
+	}
+
+	public void addStrike(Player player) {
+		player.setStrikes(player.getStrikes() + 1);
+	}
+
+	public void resetStrikes(Player player) {
+		player.setStrikes(0);
 	}
 
 }

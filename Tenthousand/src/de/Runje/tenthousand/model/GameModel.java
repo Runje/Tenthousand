@@ -10,7 +10,7 @@ public class GameModel extends Observable{
 	int indexPlayingPlayer = 0;
 	public boolean takeover;
 	public Dices dices;
-	
+	private Rules rules;
 	private boolean finished;
 	public DiceHandler diceHandler;
 	public PlayerHandler playerHandler;
@@ -25,12 +25,20 @@ public class GameModel extends Observable{
 	public GameModel(ArrayList<Player> players, Rules rules) {
 		this.players = players;
 		this.finished = false;
+		this.rules = rules;
 		this.dices = new Dices();
 		this.takeover = false;
 		this.diceHandler = new DiceHandler(dices);
 		this.playerHandler = new PlayerHandler(diceHandler);
 	}
 	
+
+	/**
+	 * @return the rules
+	 */
+	public Rules getRules() {
+		return rules;
+	}
 
 	/**
 	 * @return the players

@@ -1,9 +1,12 @@
 package de.Runje.tenthousand.controller;
 
+import de.Runje.tenthousand.logger.LogLevel;
+import de.Runje.tenthousand.logger.Logger;
 import de.Runje.tenthousand.model.Dice;
 import de.Runje.tenthousand.model.DiceState;
 import de.Runje.tenthousand.model.GameModel;
 import de.Runje.tenthousand.model.Player;
+import de.Runje.tenthousand.model.PlayerHandler;
 import de.Runje.tenthousand.model.Rules;
 
 public class ActionHandler {
@@ -36,7 +39,6 @@ public class ActionHandler {
 	}
 
 	private void executeRoll(GameModel model) {
-		Player player = model.getPlayingPlayer();
 		model.playerHandler.rollDices(model.getPlayingPlayer());
 		model.takeover = false;
 		model.notifyObservers();
@@ -61,11 +63,17 @@ public class ActionHandler {
 		if (points < Rules.MinPoints) {
 			model.diceHandler.resetAll();
 			model.takeover = false;
+			model.playerHandler.addStrike(model.getPlayingPlayer());
+			if (model.getPlayingPlayer().getStrikes() == Rules.MaxStrikes) {
+				Logger.log(LogLevel.INFO, "ActionHandler", Rules.MaxStrikes + ". Strike, resetting points for " + model.getPlayingPlayer().getName());
+				model.getPlayingPlayer().setAllPoints(0);
+			};
 		} else {
 			//add points
 			model.getPlayingPlayer().addPoints(points);
 			model.dices.fix();
 			model.takeover = true;
+			model.playerHandler.resetStrikes(model.getPlayingPlayer());
 		}
 		
 		model.getPlayingPlayer().setRolls(0);

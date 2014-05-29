@@ -23,12 +23,53 @@ public class Player {
 	 */
 	private boolean finished;
 	
+	/**
+	 * Counts zero points in a row
+	 */
+	private int strikes;
+	
 	Player(String name) {
 		this.name = name;
 		this.allPoints = 0;
 		this.rolls = 0;
 		this.finished = false;
 		this.willTakeOver = false;
+		this.strikes = 0;
+	}
+
+	/**
+	 * @return the allPoints
+	 */
+	public int getAllPoints() {
+		return allPoints;
+	}
+
+	/**
+	 * @param allPoints the allPoints to set
+	 */
+	public void setAllPoints(int allPoints) {
+		this.allPoints = allPoints;
+	}
+
+	/**
+	 * @return the strikes
+	 */
+	public int getStrikes() {
+		return strikes;
+	}
+
+	/**
+	 * @param strikes the strikes to set
+	 */
+	public void setStrikes(int strikes) {
+		this.strikes = strikes;
+	}
+
+	/**
+	 * @return the willTakeOver
+	 */
+	public boolean isWillTakeOver() {
+		return willTakeOver;
 	}
 
 	/**
