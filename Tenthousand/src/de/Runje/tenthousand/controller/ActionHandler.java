@@ -52,9 +52,7 @@ public class ActionHandler {
 		} else if (state == DiceState.FORCE_NO_POINTS) {
 			dice.setState(DiceState.POINTS);
 		}
-		model.diceHandler.updateValuePairs();
-		model.diceHandler.updatePoints();
-		model.diceHandler.updateStates();
+		model.diceHandler.update();
 		model.notifyObservers();
 	}
 	

@@ -34,7 +34,7 @@ public class GameView implements IObserver{
 	public GameView(Controller controller) {
 		this.controller = controller;
 		//1. Create the frame.
-		frame = new JFrame("FrameDemo");
+		frame = new JFrame("Tenthousand");
 
 		//2. Optional: What happens when the frame closes?
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -80,7 +80,8 @@ public class GameView implements IObserver{
 		updatePoints();
 		//4. Size the frame.
 		frame.pack();
-
+		//Center on screen
+		frame.setLocationRelativeTo(null);
 		//5. Show it.
 		frame.setVisible(true);
 		controller.model.addObserver(this);
@@ -109,9 +110,7 @@ public class GameView implements IObserver{
 			} else if (state == DiceState.FIX) {
 				color = Color.RED;
 			}
-				
 			buttonDices.get(i).setBackground(color);
-			
 		}
 	}
 	@Override

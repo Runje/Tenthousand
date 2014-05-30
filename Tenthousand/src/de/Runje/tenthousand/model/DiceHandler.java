@@ -3,6 +3,7 @@ package de.Runje.tenthousand.model;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import de.Runje.tenthousand.Tenthousand;
 import de.Runje.tenthousand.logger.LogLevel;
 import de.Runje.tenthousand.logger.Logger;
 
@@ -109,19 +110,18 @@ public class DiceHandler {
 		}
 
 		dices.roll();
-		updateValuePairs();
-		updatePoints();
+		update();
 	}
 
 	/**
 	 * Updates the member valuePairs and the states of the dices
 	 */
-	public void updateValuePairs() {
+	private void updateValuePairs() {
 		newValuePairs = determineValuePairs();
 		updateStates();
 	}
 
-	public void updateStates() {
+	private void updateStates() {
 		// Set all countable dices to NO_POINTS
 		for (Dice dice : dices.getDices()) {
 			if (dice.isCountable()) {
@@ -172,7 +172,7 @@ public class DiceHandler {
 	 * 
 	 * @return List of new Value Pairs
 	 */
-	public ArrayList<ValuePair> determineValuePairs() {
+	private ArrayList<ValuePair> determineValuePairs() {
 		assert (dices.getDices().size() <= 5);
 		// copy original list, because it shouldn't be sorted (There should be a
 		// better way?)
@@ -314,7 +314,8 @@ public class DiceHandler {
 		return i == 2;
 	}
 
-	public void updatePoints() {
+	public void update() {
+		updateValuePairs();
 		this.newPoints = rules.calcPoints(newValuePairs);
 	}
 

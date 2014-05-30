@@ -8,10 +8,10 @@ import java.util.List;
 
 import org.junit.Test;
 
+import de.Runje.tenthousand.Tenthousand;
 import de.Runje.tenthousand.model.Dice;
 import de.Runje.tenthousand.model.DiceState;
 import de.Runje.tenthousand.model.Dices;
-import de.Runje.tenthousand.model.Tenthousand;
 import de.Runje.tenthousand.model.Value;
 import de.Runje.tenthousand.model.ValuePair;
 
