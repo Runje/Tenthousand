@@ -26,6 +26,8 @@ public class SimulatorView {
 	JComboBox<DiceState> stateSelect;
 
 	private JPanel panelPlayer;
+
+	private JPanel panelCalculator;
 	
 	public SimulatorView(Simulator simulator) {
 		this.simulator = simulator;
@@ -36,13 +38,29 @@ public class SimulatorView {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		createPanelDices();
 		createPanelPlayer();
+		createPanelCalculator();
 		frame.getContentPane().add(panelPlayer, BorderLayout.SOUTH);
 		frame.getContentPane().add(panelDices, BorderLayout.NORTH);
+		frame.getContentPane().add(panelCalculator, BorderLayout.EAST);
 		//4. Size the frame.
 		frame.pack();
 		
 		//5. Show it.
 		frame.setVisible(true);
+	}
+
+	private void createPanelCalculator() {
+		panelCalculator = new JPanel();
+		
+		JTextField points = new JTextField();
+		points.setColumns(5);
+		JLabel result = new JLabel( "??? %");
+		
+		JButton calc = new JButton("Calculate probability");
+		calc.addActionListener(new ALCalc(simulator, points, result));
+		panelCalculator.add(points);
+		panelCalculator.add(calc);
+		panelCalculator.add(result);
 	}
 
 	private void createPanelPlayer() {

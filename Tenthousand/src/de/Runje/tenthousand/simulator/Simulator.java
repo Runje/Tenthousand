@@ -2,7 +2,10 @@ package de.Runje.tenthousand.simulator;
 
 import java.util.ArrayList;
 
+import de.Runje.tenthousand.logger.LogLevel;
+import de.Runje.tenthousand.logger.Logger;
 import de.Runje.tenthousand.model.Dice;
+import de.Runje.tenthousand.model.DiceHandler;
 import de.Runje.tenthousand.model.DiceState;
 import de.Runje.tenthousand.model.Dices;
 import de.Runje.tenthousand.model.GameModel;
@@ -32,6 +35,11 @@ public class Simulator implements IObserver{
 	 * State of the changed dice
 	 */
 	private DiceState state;
+	
+	/**
+	 * Number of iterations for calculation
+	 */
+	private int n = 10000;
 
 	/**
 	 * @param number the number to set
@@ -126,5 +134,34 @@ public class Simulator implements IObserver{
 	
 	public void setStrikes(int strikes) {
 		player.setStrikes(strikes);
+	}
+
+	public double calcProbability(int points) {
+		Logger.log(LogLevel.DEBUG, "Simulator", "Calc Probability for at least " + points + " points.");
+		int count = 0;
+		for (int i = 0; i < n; i++) {
+			if (simulateRoll() >= points) {
+				count++;
+			}
+		}
+		return count / (double) n;
+	}
+
+	private int simulateRoll() {
+		//Clone dices
+		Dices dices = new Dices(model.dices);
+		//	Create diceHandler
+		DiceHandler dh = new DiceHandler(dices);
+		//roll dices
+		dh.rollDices();
+		return dh.getNewPoints();
+	}
+
+	public double calcExpectedValue() {
+		int points = 0;
+		for (int i = 0; i < n; i++) {
+			points += simulateRoll();
+		}
+		return points / (double) n;
 	}
 }

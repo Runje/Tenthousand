@@ -52,6 +52,15 @@ public class Dice implements Comparable<Dice>
 		number = n;
 	}
 	
+	/**
+	 * Copy construtor
+	 * @param d dice to copy
+	 */
+	public Dice(Dice d) {
+		this.number = d.getNumber();
+		this.state = d.getState();
+	}
+	
 	//Determines if this dice should be considered to calculate points
 	public boolean isCountable() {
 		return this.state == DiceState.NO_POINTS || this.state == DiceState.POINTS;

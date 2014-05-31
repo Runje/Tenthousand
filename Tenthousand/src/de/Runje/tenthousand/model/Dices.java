@@ -34,6 +34,17 @@ public class Dices {
 	public Dices(ArrayList<Dice> dices) {
 		this.dices = dices;
 	}
+	
+	/**
+	 * Copy constructor
+	 * @param d Dices to copy
+	 */
+	public Dices(Dices d) {
+		this.dices = new ArrayList<Dice>(d.getDices().size());
+		for (Dice dice : d.getDices()) {
+			this.dices.add(new Dice(dice));
+		}
+	}
 
 	/**
 	 * roll all rollable dices
@@ -117,4 +128,5 @@ public class Dices {
 		}
 		return allFixed;
 	}
+	
 }
