@@ -28,7 +28,7 @@ public class Player {
 	 */
 	private int strikes;
 	
-	Player(String name) {
+	public Player(String name) {
 		this.name = name;
 		this.allPoints = 0;
 		this.rolls = 0;
@@ -150,6 +150,13 @@ public class Player {
 
 	public boolean hasNotRolled() {
 		return rolls == 0 && !isFinished();
+	}
+
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
 	}
 		
 }

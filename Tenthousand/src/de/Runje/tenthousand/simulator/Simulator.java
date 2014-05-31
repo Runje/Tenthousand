@@ -1,21 +1,38 @@
 package de.Runje.tenthousand.simulator;
 
+import java.util.ArrayList;
+
 import de.Runje.tenthousand.model.Dice;
 import de.Runje.tenthousand.model.DiceState;
 import de.Runje.tenthousand.model.Dices;
 import de.Runje.tenthousand.model.GameModel;
+import de.Runje.tenthousand.model.Player;
 import de.Runje.tenthousand.observer.IObserver;
 
 public class Simulator implements IObserver{
 
 	private GameModel model;
 	
-	private int dice;
+	/**
+	 * The player to change
+	 */
+	private Player player;
 	
+	/**
+	 * Index of the dice to change
+	 */
+	private int index;
+	
+	/**
+	 * Number of the changed dice
+	 */
 	private int number;
 	
+	/**
+	 * State of the changed dice
+	 */
 	private DiceState state;
-	
+
 	/**
 	 * @param number the number to set
 	 */
@@ -34,21 +51,22 @@ public class Simulator implements IObserver{
 	 * @return the dice
 	 */
 	public int getDice() {
-		return dice;
+		return index;
 	}
 
 	/**
 	 * @param dice the dice to set
 	 */
 	public void setDice(int dice) {
-		this.dice = dice;
+		this.index = dice;
 	}
 
 	public Simulator(GameModel model) {
 		this.model = model;
-		this.dice = 0;
+		this.index = 0;
 		this.number = 1;
 		this.state = DiceState.NO_POINTS;
+		this.player = new Player(model.getPlayingPlayer().getName());
 	}
 
 	public static int simulate() {
@@ -66,11 +84,47 @@ public class Simulator implements IObserver{
 	}
 
 	public void changeDice() {
-		Dice d = model.dices.getDices().get(dice);
+		Dice d = model.dices.getDices().get(index);
 		d.setNumber(number);
 		d.setState(state);
 		model.diceHandler.update();
 		model.notifyObservers();
 	}
 
+	public String[] getPlayersList() {
+		ArrayList<Player> players = model.getPlayers();
+		String[] list = new String[players.size()];
+		
+		int i = 0;
+		for (Player player : players) {
+			list[i] = player.getName();
+			i++;
+		}
+		return list;
+	}
+
+	public void changePlayer(int points) {
+		Player changePlayer = model.getPlayerByName(player.getName());
+		changePlayer.setAllPoints(points);
+		changePlayer.setStrikes(player.getStrikes());
+		changePlayer.setRolls(player.getRolls());
+		model.notifyObservers();
+	}
+
+	
+	public void setName(String name) {
+		player.setName(name);
+	}
+	
+	public void setPoints(int points) {
+		player.setAllPoints(points);
+	}
+	
+	public void setRolls(int rolls) {
+		player.setRolls(rolls);
+	}
+	
+	public void setStrikes(int strikes) {
+		player.setStrikes(strikes);
+	}
 }

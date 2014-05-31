@@ -87,6 +87,15 @@ public class GameModel extends Observable{
 	public boolean isPlayerFinished() {
 		return getPlayingPlayer().isFinished();
 	}
+
+	public Player getPlayerByName(String name) {
+		for (Player player : players) {
+			if (player.getName().equals(name)) {
+				return player;
+			}
+		}
+		return null;
+	}
 	
 
 }

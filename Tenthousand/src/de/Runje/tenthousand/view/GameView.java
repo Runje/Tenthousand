@@ -123,9 +123,9 @@ public class GameView implements IObserver{
 
 	private void updatePoints() {
 		ArrayList<Player> players = controller.getPlayers();
-		textPoints.setText("");
+		textPoints.setText("Player" + "\t" + "Points" + "\t" + "Rolls" + "\t" + "Strikes\n");
 		for (Player player : players) {
-			textPoints.append(player.getName() + "\t" + player.getPoints() + "\n");
+			textPoints.append(player.getName() + "\t" + player.getPoints() + "\t" + player.getRolls() + "\t" + player.getStrikes() + "\n");
 		}
 		textPoints.append("Turn: " + controller.getNameOfPlayingPlayer());
 		
