@@ -6,7 +6,12 @@ public class AIPlayer extends Player {
 	public AIPlayer(String name, IStrategy strategy) {
 		super(name);
 		this.strategy = strategy;
-		this.ai = true;
+		this.human = false;
+	}
+	public AIPlayer(Player player, DefaultStrategy strategy) {
+		super(player);
+		this.strategy = strategy;
+		this.human = false;
 	}
 	/**
 	 * @return the strategy

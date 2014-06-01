@@ -29,13 +29,13 @@ public class Player {
 	/**
 	 * AI Player
 	 */
-	protected boolean ai;
+	protected boolean human;
 	
 	/**
 	 * @return the ai
 	 */
-	public boolean isAi() {
-		return ai;
+	public boolean isHuman() {
+		return human;
 	}
 
 	public Player(String name) {
@@ -45,7 +45,17 @@ public class Player {
 		this.finished = false;
 		this.willTakeOver = false;
 		this.strikes = 0;
-		this.ai = false;
+		this.human = true;
+	}
+
+	public Player(Player player) {
+		this.name = player.getName();
+		this.allPoints = player.getAllPoints();
+		this.rolls = player.getRolls();
+		this.finished = player.isFinished();
+		this.willTakeOver = player.willTakeOver();
+		this.strikes = player.getStrikes();
+		this.human = player.isHuman();
 	}
 
 	/**

@@ -1,14 +1,18 @@
 package de.Runje.tenthousand.model;
 
+import de.Runje.tenthousand.controller.Action;
+import de.Runje.tenthousand.controller.ActionHandler;
 import de.Runje.tenthousand.logger.LogLevel;
 import de.Runje.tenthousand.logger.Logger;
 
 public class PlayerHandler {
 	
 	private DiceHandler diceHandler;
+	private GameModel model;
 
-	public PlayerHandler(DiceHandler diceHandler) {
+	public PlayerHandler(DiceHandler diceHandler, GameModel model) {
 		this.diceHandler = diceHandler;
+		this.model = model;
 	}
 	
 	public void rollDices(Player player) {
@@ -49,6 +53,37 @@ public class PlayerHandler {
 
 	public void resetStrikes(Player player) {
 		player.setStrikes(0);
+	}
+	
+	public void makeTurnFor(Player player, IStrategy strategy) {
+		ActionHandler actionHandler = new ActionHandler();
+		// take over
+		if (model.isPossibleToTakeOver()) {
+			if (strategy.takeover()) {
+				player.willTakeOver();
+			}
+		}
+		while (!player.isFinished()) {
+			// release dices
+			for (int i : strategy.releaseDices()) {
+				Action a = Action.Switch;
+				a.index = i;
+				actionHandler.executeAction(a, model);
+			}
+			// roll
+			actionHandler.executeRoll(model, player);
+			// next
+			if (strategy.endMove() && model.nextIsPossible()) {
+				actionHandler.executeAction(Action.Next, model);
+			}
+			// merge
+			if (model.isPossibleToMerge() && strategy.merge()) {
+				actionHandler.executeAction(Action.Merge, model);
+			}
+		}
+	}
+	public void makeTurnFor(AIPlayer player) {
+		makeTurnFor(player, player.getStrategy());
 	}
 
 }

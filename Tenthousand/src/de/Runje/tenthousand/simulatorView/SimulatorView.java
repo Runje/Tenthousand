@@ -55,7 +55,7 @@ public class SimulatorView {
 	private void createPanelCalculator() {
 		panelCalculator = new JPanel();
 		
-		JTextField points = new JTextField();
+		JTextField points = new JTextField("1");
 		points.setColumns(5);
 		JLabel result = new JLabel( "Probability: ??? %. EV: ????");
 		

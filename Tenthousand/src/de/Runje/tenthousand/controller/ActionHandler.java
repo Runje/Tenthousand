@@ -21,7 +21,7 @@ public class ActionHandler {
 			executeNext(model);
 			break;
 		case Roll:
-			executeRoll(model);
+			executeRoll(model, model.getPlayingPlayer());
 			break;
 		case Switch:
 			executeSwitch(model, action.index);
@@ -39,8 +39,8 @@ public class ActionHandler {
 		model.getPlayingPlayer().takeOver();
 	}
 
-	private void executeRoll(GameModel model) {
-		model.playerHandler.rollDices(model.getPlayingPlayer());
+	public void executeRoll(GameModel model, Player player) {
+		model.playerHandler.rollDices(player);
 		model.takeover = false;
 		Logger.log(LogLevel.INFO, "ActionHandler", model.dices.getDices().toString());
 		model.notifyObservers();

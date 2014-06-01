@@ -32,9 +32,25 @@ public class GameModel extends Observable{
 		this.dices = new Dices();
 		this.takeover = false;
 		this.diceHandler = new DiceHandler(dices);
-		this.playerHandler = new PlayerHandler(diceHandler);
+		this.playerHandler = new PlayerHandler(diceHandler, this);
+		this.gameFinished = false;
 	}
 	
+	public GameModel(GameModel model) {
+		//copy players
+		this.players = new ArrayList<Player>(model.players.size());
+		for (Player player : model.players) {
+			this.players.add(new Player(player));
+		}
+		this.indexPlayingPlayer = model.indexPlayingPlayer;
+		this.finished = model.finished;
+		this.rules = model.rules;
+		this.dices = new Dices(model.dices);
+		this.takeover = model.takeover;
+		this.diceHandler = new DiceHandler(dices);
+		this.playerHandler = new PlayerHandler(diceHandler, this);
+		this.gameFinished = model.gameFinished;
+	}
 
 	/**
 	 * @return the rules
@@ -71,33 +87,8 @@ public class GameModel extends Observable{
 
 	private void handleAIPlayer() {
 		AIPlayer player = (AIPlayer) getPlayingPlayer();
-		IStrategy strategy = player.getStrategy();
-		ActionHandler actionHandler = new ActionHandler();
-		// take over
-		if (isPossibleToTakeOver()) {
-			if (strategy.takeover()) {
-				player.willTakeOver();
-			}
-		}
-		while (!player.isFinished()) {
-			// release dices
-			for (int i : strategy.releaseDices()) {
-				Action a = Action.Switch;
-				a.index = i;
-				actionHandler.executeAction(a, this);
-			}
-			// roll
-			actionHandler.executeAction(Action.Roll, this);
-			// next
-			if (strategy.endMove() && nextIsPossible()) {
-				actionHandler.executeAction(Action.Next, this);
-			}
-			// merge
-			if (isPossibleToMerge() && strategy.merge()) {
-				actionHandler.executeAction(Action.Merge, this);
-			}
-		}
-		actionHandler.executeAction(Action.Next, this);
+		playerHandler.makeTurnFor(player);
+		new ActionHandler().executeAction(Action.Next, this);
 	}
 
 	private void endGame() {
@@ -144,7 +135,7 @@ public class GameModel extends Observable{
 	public void handleNextPlayer() {
 		getPlayingPlayer().startNewMove();
 		// AIPlayer?
-		if (getPlayingPlayer().isAi()) {
+		if (!getPlayingPlayer().isHuman()) {
 			handleAIPlayer();
 		}
 	}

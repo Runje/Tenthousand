@@ -35,7 +35,6 @@ public class ALCalc implements ActionListener {
 		}
 		ButtonModel bm = group.getSelection();
 		String cmd = bm.getActionCommand();
-		Logger.log(LogLevel.INFO, "Simulator", cmd);
 		double prob = -1;
 		double ev = -1;
 		
