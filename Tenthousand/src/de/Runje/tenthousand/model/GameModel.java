@@ -2,6 +2,8 @@ package de.Runje.tenthousand.model;
 
 import java.util.ArrayList;
 
+import de.Runje.tenthousand.controller.Action;
+import de.Runje.tenthousand.controller.ActionHandler;
 import de.Runje.tenthousand.observer.Observable;
 
 public class GameModel extends Observable{
@@ -48,11 +50,6 @@ public class GameModel extends Observable{
 		return players;
 	}
 
-	private void determineOrder() {
-		//random or let decide rules
-		//change order of players
-	}
-
 	/**
 	 * Returns player which turn it is
 	 * @return
@@ -70,6 +67,37 @@ public class GameModel extends Observable{
 				}
 			}
 		}
+	}
+
+	private void handleAIPlayer() {
+		AIPlayer player = (AIPlayer) getPlayingPlayer();
+		IStrategy strategy = player.getStrategy();
+		ActionHandler actionHandler = new ActionHandler();
+		// take over
+		if (isPossibleToTakeOver()) {
+			if (strategy.takeover()) {
+				player.willTakeOver();
+			}
+		}
+		while (!player.isFinished()) {
+			// release dices
+			for (int i : strategy.releaseDices()) {
+				Action a = Action.Switch;
+				a.index = i;
+				actionHandler.executeAction(a, this);
+			}
+			// roll
+			actionHandler.executeAction(Action.Roll, this);
+			// next
+			if (strategy.endMove() && nextIsPossible()) {
+				actionHandler.executeAction(Action.Next, this);
+			}
+			// merge
+			if (isPossibleToMerge() && strategy.merge()) {
+				actionHandler.executeAction(Action.Merge, this);
+			}
+		}
+		actionHandler.executeAction(Action.Next, this);
 	}
 
 	private void endGame() {
@@ -95,6 +123,30 @@ public class GameModel extends Observable{
 			}
 		}
 		return null;
+	}
+
+	public boolean isPossibleToTakeOver() {
+		return takeover && !isGameFinished();
+	}
+
+	public boolean isPossibleToRoll() {
+		return !isPlayerFinished() && !isGameFinished();
+	}
+	
+	public boolean nextIsPossible() {
+		return !getPlayingPlayer().hasNotRolled()  && !isGameFinished();
+	}
+
+	public boolean isPossibleToMerge() {
+		return diceHandler.isPossibleToMergeTwoFives()  && !isGameFinished();
+	}
+
+	public void handleNextPlayer() {
+		getPlayingPlayer().startNewMove();
+		// AIPlayer?
+		if (getPlayingPlayer().isAi()) {
+			handleAIPlayer();
+		}
 	}
 	
 

@@ -12,6 +12,7 @@ import de.Runje.tenthousand.model.Rules;
 public class ActionHandler {
 
 	public void executeAction(Action action, GameModel model) {
+		Logger.log(LogLevel.DEBUG, "ActionHandler", action.toString());
 		switch (action) {
 		case Merge:
 			executeMerge(model);
@@ -41,6 +42,7 @@ public class ActionHandler {
 	private void executeRoll(GameModel model) {
 		model.playerHandler.rollDices(model.getPlayingPlayer());
 		model.takeover = false;
+		Logger.log(LogLevel.INFO, "ActionHandler", model.dices.getDices().toString());
 		model.notifyObservers();
 	}
 	
@@ -76,7 +78,8 @@ public class ActionHandler {
 		
 		model.getPlayingPlayer().setRolls(0);
 		model.nextPlayer();
-		model.getPlayingPlayer().startNewMove();
+		model.notifyObservers();
+		model.handleNextPlayer();
 		model.notifyObservers();
 	}
 	
