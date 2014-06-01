@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import de.Runje.tenthousand.logger.LogLevel;
 import de.Runje.tenthousand.logger.Logger;
+import de.Runje.tenthousand.model.DefaultStrategy;
 import de.Runje.tenthousand.model.Dice;
 import de.Runje.tenthousand.model.DiceHandler;
 import de.Runje.tenthousand.model.DiceState;
@@ -163,5 +164,33 @@ public class Simulator implements IObserver{
 			points += simulateRoll();
 		}
 		return points / (double) n;
+	}
+
+	public double calcProbabilityTillEnd(int points) {
+		int count = 0;
+		for (int i = 0; i < n; i++) {
+			if (simulateTurn() >= points) {
+				count++;
+			}
+		}
+		return count / (double) n;
+	}
+
+	private int simulateTurn() {
+		//Clone dices
+		Dices dices = new Dices(model.dices);
+		//Player player = new AIPlayer(player, new DefaultStrategy(model));
+		//	Create diceHandler
+		DiceHandler dh = new DiceHandler(dices);
+		while (!player.isFinished()) {
+			//roll dices
+			dh.rollDices();
+		}
+		return dh.getNewPoints();
+	}
+
+	public double calcExpectedValueTillEnd() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

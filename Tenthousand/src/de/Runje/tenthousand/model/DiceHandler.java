@@ -108,7 +108,6 @@ public class DiceHandler {
 					"All Dices are fixed. Resetting them...");
 			dices.reset();
 		}
-
 		dices.roll();
 		update();
 	}
@@ -252,7 +251,6 @@ public class DiceHandler {
 				counts.set(dice.getNumber() - 1, old + 1);
 			}
 		}
-
 		return counts;
 	}
 

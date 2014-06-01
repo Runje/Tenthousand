@@ -42,19 +42,19 @@ public class Controller {
 	}
 
 	public boolean isPossibleToRoll() {
-		return !model.isPlayerFinished() && !model.isGameFinished();
+		return model.isPossibleToRoll();
 	}
 
 	public boolean isPossibleToTakeOver() {
-		return model.takeover && !model.isGameFinished();
+		return model.isPossibleToTakeOver();
 	}
 
 	public boolean nextIsPossible() {
-		return !model.getPlayingPlayer().hasNotRolled()  && !model.isGameFinished();
+		return model.nextIsPossible();
 	}
 
 	public boolean isPossibleToMerge() {
-		return model.diceHandler.isPossibleToMergeTwoFives()  && !model.isGameFinished();
+		return model.isPossibleToMerge();
 	}
 
 	public void handleAction(Action action) {

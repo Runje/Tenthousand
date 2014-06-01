@@ -16,7 +16,7 @@ public class PlayerHandler {
 		if (player.getRolls() == 0 && !player.willTakeOver()) {
 			Logger.log(LogLevel.INFO, "Player", player.getName() + " will not take over the dices.");
 			diceHandler.resetAll();
-		} else {
+		} else if (player.getRolls() == 0){
 			Logger.log(LogLevel.INFO, "Player", player.getName() + " will take over the dices.");
 			player.setWillTakeOver(false);
 		}

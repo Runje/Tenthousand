@@ -1,7 +1,5 @@
 package de.Runje.tenthousand.model;
 
-import de.Runje.tenthousand.logger.LogLevel;
-import de.Runje.tenthousand.logger.Logger;
 
 public class Player {
 
@@ -28,6 +26,18 @@ public class Player {
 	 */
 	private int strikes;
 	
+	/**
+	 * AI Player
+	 */
+	protected boolean ai;
+	
+	/**
+	 * @return the ai
+	 */
+	public boolean isAi() {
+		return ai;
+	}
+
 	public Player(String name) {
 		this.name = name;
 		this.allPoints = 0;
@@ -35,6 +45,7 @@ public class Player {
 		this.finished = false;
 		this.willTakeOver = false;
 		this.strikes = 0;
+		this.ai = false;
 	}
 
 	/**

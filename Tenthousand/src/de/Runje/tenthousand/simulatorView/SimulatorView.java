@@ -3,12 +3,15 @@ package de.Runje.tenthousand.simulatorView;
 import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.JToggleButton;
 
 import de.Runje.tenthousand.model.DiceState;
 import de.Runje.tenthousand.model.Rules;
@@ -54,11 +57,21 @@ public class SimulatorView {
 		
 		JTextField points = new JTextField();
 		points.setColumns(5);
-		JLabel result = new JLabel( "??? %");
+		JLabel result = new JLabel( "Probability: ??? %. EV: ????");
 		
+		JRadioButton nextRoll = new JRadioButton("Next roll");
+		nextRoll.setActionCommand("Next");
+		nextRoll.setSelected(true);
+		JRadioButton tillEnd = new JRadioButton("Until end of move");
+		tillEnd.setActionCommand("End");
+		ButtonGroup group = new ButtonGroup();
+		group.add(nextRoll);
+		group.add(tillEnd);
 		JButton calc = new JButton("Calculate probability");
-		calc.addActionListener(new ALCalc(simulator, points, result));
+		calc.addActionListener(new ALCalc(simulator, points, result, group));
 		panelCalculator.add(points);
+		panelCalculator.add(nextRoll);
+		panelCalculator.add(tillEnd);
 		panelCalculator.add(calc);
 		panelCalculator.add(result);
 	}
