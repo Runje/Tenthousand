@@ -59,13 +59,13 @@ public class PlayerHandler {
 		ActionHandler actionHandler = new ActionHandler();
 		// take over
 		if (model.isPossibleToTakeOver()) {
-			if (strategy.takeover()) {
+			if (strategy.takeover(model)) {
 				player.willTakeOver();
 			}
 		}
 		while (!player.isFinished()) {
 			// release dices
-			for (int i : strategy.releaseDices()) {
+			for (int i : strategy.releaseDices(model)) {
 				Action a = Action.Switch;
 				a.index = i;
 				actionHandler.executeAction(a, model);
@@ -73,11 +73,11 @@ public class PlayerHandler {
 			// roll
 			actionHandler.executeRoll(model, player);
 			// next
-			if (strategy.endMove() && model.nextIsPossible()) {
-				actionHandler.executeAction(Action.Next, model);
+			if (strategy.endMove(model) && model.nextIsPossible()) {
+				break;
 			}
 			// merge
-			if (model.isPossibleToMerge() && strategy.merge()) {
+			if (model.isPossibleToMerge() && strategy.merge(model)) {
 				actionHandler.executeAction(Action.Merge, model);
 			}
 		}

@@ -3,7 +3,7 @@ package de.Runje.tenthousand.logger;
 public class Logger {
 
 	private static Logger logger = new Logger();
-	public static LogLevel logLevel = LogLevel.INFO;
+	public static LogLevel logLevel = LogLevel.DEBUG;
 	private Logger() {
 	}
 

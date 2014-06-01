@@ -139,6 +139,13 @@ public class GameModel extends Observable{
 			handleAIPlayer();
 		}
 	}
+
+	public int getPoints() {
+		return diceHandler.getAllPoints() + diceHandler.getNewPoints();
+	}
+	public int getFreeDices() {
+		return dices.getFreeDices();
+	}
 	
 
 }

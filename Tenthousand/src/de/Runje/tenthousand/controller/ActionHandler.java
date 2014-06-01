@@ -59,6 +59,7 @@ public class ActionHandler {
 	}
 	
 	private void executeNext(GameModel model) {
+		model.getPlayingPlayer().setFinished(true);
 		int points = model.diceHandler.getAllPoints() + model.diceHandler.getNewPoints();
 		if (points < Rules.MinPoints) {
 			model.diceHandler.resetAll();

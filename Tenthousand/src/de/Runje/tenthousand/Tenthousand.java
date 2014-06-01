@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import de.Runje.tenthousand.controller.Controller;
 import de.Runje.tenthousand.model.AIPlayer;
-import de.Runje.tenthousand.model.DefaultStrategy;
 import de.Runje.tenthousand.model.GameModel;
 import de.Runje.tenthousand.model.HumanPlayer;
+import de.Runje.tenthousand.model.MyStrategy;
 import de.Runje.tenthousand.model.Player;
 import de.Runje.tenthousand.model.Rules;
 import de.Runje.tenthousand.simulator.Simulator;
@@ -22,7 +22,7 @@ public class Tenthousand {
 		
 		ArrayList<Player> players = new ArrayList<Player>();
 		players.add(new HumanPlayer("Thomas"));
-		players.add(new AIPlayer("Milena", new DefaultStrategy()));
+		players.add(new AIPlayer("Milena", new MyStrategy()));
 		GameModel model = new GameModel(players, new Rules());
 		
 		Controller controller = new Controller(model);

@@ -11,7 +11,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-import javax.swing.JToggleButton;
 
 import de.Runje.tenthousand.model.DiceState;
 import de.Runje.tenthousand.model.Rules;
@@ -67,11 +66,15 @@ public class SimulatorView {
 		ButtonGroup group = new ButtonGroup();
 		group.add(nextRoll);
 		group.add(tillEnd);
+		String[] list = {"MyStrategy", "DefaultStrategy"};
+		JComboBox<String> cbStrategy = new JComboBox<String>(list);
+		cbStrategy.addActionListener(new ALStrategy(simulator));
 		JButton calc = new JButton("Calculate probability");
 		calc.addActionListener(new ALCalc(simulator, points, result, group));
 		panelCalculator.add(points);
 		panelCalculator.add(nextRoll);
 		panelCalculator.add(tillEnd);
+		panelCalculator.add(cbStrategy);
 		panelCalculator.add(calc);
 		panelCalculator.add(result);
 	}

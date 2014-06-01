@@ -128,5 +128,15 @@ public class Dices {
 		}
 		return allFixed;
 	}
+
+	public int getFreeDices() {
+		int count = 0;
+		for (Dice dice : dices) {
+			if (dice.isRollable()) {
+				count++;
+			}
+		}
+		return count;
+	}
 	
 }

@@ -8,7 +8,7 @@ public class AIPlayer extends Player {
 		this.strategy = strategy;
 		this.human = false;
 	}
-	public AIPlayer(Player player, DefaultStrategy strategy) {
+	public AIPlayer(Player player, IStrategy strategy) {
 		super(player);
 		this.strategy = strategy;
 		this.human = false;

@@ -6,22 +6,22 @@ public class DefaultStrategy implements IStrategy {
 	public DefaultStrategy() {
 	}
 	@Override
-	public boolean endMove() {
+	public boolean endMove(GameModel model) {
 		return false;
 	}
 
 	@Override
-	public boolean takeover() {
+	public boolean takeover(GameModel model) {
 		return true;
 	}
 
 	@Override
-	public boolean merge() {
+	public boolean merge(GameModel model) {
 		return true;
 	}
 
 	@Override
-	public int[] releaseDices() {
+	public int[] releaseDices(GameModel model) {
 		return new int[0];
 	}
 

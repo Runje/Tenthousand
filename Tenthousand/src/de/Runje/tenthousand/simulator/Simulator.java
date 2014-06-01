@@ -5,12 +5,13 @@ import java.util.ArrayList;
 import de.Runje.tenthousand.logger.LogLevel;
 import de.Runje.tenthousand.logger.Logger;
 import de.Runje.tenthousand.model.AIPlayer;
-import de.Runje.tenthousand.model.DefaultStrategy;
 import de.Runje.tenthousand.model.Dice;
 import de.Runje.tenthousand.model.DiceHandler;
 import de.Runje.tenthousand.model.DiceState;
 import de.Runje.tenthousand.model.Dices;
 import de.Runje.tenthousand.model.GameModel;
+import de.Runje.tenthousand.model.IStrategy;
+import de.Runje.tenthousand.model.MyStrategy;
 import de.Runje.tenthousand.model.Player;
 import de.Runje.tenthousand.model.PlayerHandler;
 import de.Runje.tenthousand.observer.IObserver;
@@ -43,6 +44,8 @@ public class Simulator implements IObserver{
 	 * Number of iterations for calculation
 	 */
 	private int n = 10000;
+
+	private IStrategy strategy;
 
 	/**
 	 * @param number the number to set
@@ -78,6 +81,7 @@ public class Simulator implements IObserver{
 		this.number = 1;
 		this.state = DiceState.NO_POINTS;
 		this.player = new Player(model.getPlayingPlayer().getName());
+		this.strategy = new MyStrategy();
 	}
 
 	public static int simulate() {
@@ -190,7 +194,7 @@ public class Simulator implements IObserver{
 	private int simulateTurn() {
 		//Clone model
 		GameModel cModel = new GameModel(model);
-		AIPlayer aiPlayer = new AIPlayer(player, new DefaultStrategy());
+		AIPlayer aiPlayer = new AIPlayer(player, strategy);
 		PlayerHandler ph = new PlayerHandler(cModel.diceHandler, cModel);
 		ph.makeTurnFor(aiPlayer);
 		int newPoints = cModel.diceHandler.getAllPoints() + cModel.diceHandler.getNewPoints();
@@ -206,5 +210,9 @@ public class Simulator implements IObserver{
 		}
 		Logger.logLevel = level;
 		return points / (double) n;
+	}
+
+	public void setStrategy(IStrategy strategy) {
+		this.strategy = strategy;
 	}
 }
