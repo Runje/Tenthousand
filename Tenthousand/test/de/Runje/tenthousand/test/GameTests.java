@@ -54,6 +54,22 @@ public class GameTests {
 		assertFalse(model.isPossibleToMerge());
 	}
 	
+	@Test
+	public void next() {
+		for (int i = 0; i < 10; i++) {
+			//Not possible at begin of turn
+			assertFalse(model.nextIsPossible());
+			while (!model.getPlayingPlayer().isFinished()) {
+				//True after first roll
+				actionHandler.executeAction(Action.Roll, model);
+				assertTrue(model.nextIsPossible());
+			}
+			actionHandler.executeAction(Action.Next, model);
+			//Not possible at begin of turn
+			assertFalse(model.nextIsPossible());
+		}
+	}
+	
 	private void changeDice(int index, int number) {
 		changeDice(index, number, DiceState.NO_POINTS);
 	}
