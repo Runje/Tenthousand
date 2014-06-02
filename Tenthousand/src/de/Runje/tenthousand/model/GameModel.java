@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import de.Runje.tenthousand.controller.Action;
 import de.Runje.tenthousand.controller.ActionHandler;
+import de.Runje.tenthousand.logger.LogLevel;
+import de.Runje.tenthousand.logger.Logger;
 import de.Runje.tenthousand.observer.Observable;
 
 public class GameModel extends Observable{
@@ -47,7 +49,7 @@ public class GameModel extends Observable{
 		this.rules = model.rules;
 		this.dices = new Dices(model.dices);
 		this.takeover = model.takeover;
-		this.diceHandler = new DiceHandler(dices);
+		this.diceHandler = new DiceHandler(model.dices);
 		this.playerHandler = new PlayerHandler(diceHandler, this);
 		this.gameFinished = model.gameFinished;
 	}

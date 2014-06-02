@@ -171,7 +171,7 @@ public class DiceHandler {
 	 * 
 	 * @return List of new Value Pairs
 	 */
-	private ArrayList<ValuePair> determineValuePairs() {
+	public ArrayList<ValuePair> determineValuePairs() {
 		assert (dices.getDices().size() <= 5);
 		// copy original list, because it shouldn't be sorted (There should be a
 		// better way?)
@@ -226,7 +226,6 @@ public class DiceHandler {
 			}
 		}
 		dices.setDices(tempDices);
-
 		Logger.log(LogLevel.DEBUG, "Dices", "The dices are " + dices);
 		Logger.log(LogLevel.DEBUG, "Dices", "The value pairs are " + result);
 		return result;

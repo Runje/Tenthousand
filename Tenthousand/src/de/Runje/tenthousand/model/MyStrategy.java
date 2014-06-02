@@ -9,6 +9,9 @@ public class MyStrategy extends DefaultStrategy {
 		if (freeDices == 3 && points >= 1000) {
 			return true;
 		}
+		if (freeDices == 0) {
+			return false;
+		}
 		if (freeDices < 3 && points >= 300) {
 			return true;
 		}

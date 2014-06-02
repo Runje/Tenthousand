@@ -43,7 +43,7 @@ public class Simulator implements IObserver{
 	/**
 	 * Number of iterations for calculation
 	 */
-	private int n = 10000;
+	private int n = 3;
 
 	private IStrategy strategy;
 
@@ -181,7 +181,7 @@ public class Simulator implements IObserver{
 	public double calcProbabilityTillEnd(int points) {
 		int count = 0;
 		LogLevel level = Logger.logLevel;
-		Logger.logLevel = LogLevel.WARN;
+		//Logger.logLevel = LogLevel.WARN;
 		for (int i = 0; i < n; i++) {
 			if (simulateTurn() >= points) {
 				count++;
@@ -192,11 +192,12 @@ public class Simulator implements IObserver{
 	}
 
 	private int simulateTurn() {
+		
 		//Clone model
 		GameModel cModel = new GameModel(model);
-		AIPlayer aiPlayer = new AIPlayer(player, strategy);
-		PlayerHandler ph = new PlayerHandler(cModel.diceHandler, cModel);
-		ph.makeTurnFor(aiPlayer);
+		Logger.log(LogLevel.INFO, "Simulator", "Points: " + cModel.playerHandler.model.getPoints() + " Dices: " + cModel.playerHandler.model.dices);
+		AIPlayer aiPlayer = new AIPlayer(cModel.getPlayingPlayer(), strategy);
+		cModel.playerHandler.makeTurnFor(aiPlayer);
 		int newPoints = cModel.diceHandler.getAllPoints() + cModel.diceHandler.getNewPoints();
 		return newPoints;
 	}

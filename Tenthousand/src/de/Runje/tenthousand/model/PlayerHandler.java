@@ -7,8 +7,8 @@ import de.Runje.tenthousand.logger.Logger;
 
 public class PlayerHandler {
 	
-	private DiceHandler diceHandler;
-	private GameModel model;
+	public DiceHandler diceHandler;
+	public GameModel model;
 
 	public PlayerHandler(DiceHandler diceHandler, GameModel model) {
 		this.diceHandler = diceHandler;
@@ -56,6 +56,8 @@ public class PlayerHandler {
 	}
 	
 	public void makeTurnFor(Player player, IStrategy strategy) {
+		Logger.log(LogLevel.INFO, "Player", "Make turn for " + player.getName() + "Rolls: " + player.getRolls() + " Strikes: " + player.getStrikes());
+		Logger.log(LogLevel.INFO, "Player", "Points: " + model.getPoints() + " Dices: " + model.dices);
 		ActionHandler actionHandler = new ActionHandler();
 		// take over
 		if (model.isPossibleToTakeOver()) {
@@ -73,7 +75,9 @@ public class PlayerHandler {
 			// roll
 			actionHandler.executeRoll(model, player);
 			// next
+			Logger.log(LogLevel.INFO, "Player", "Points " + model.getPoints());
 			if (strategy.endMove(model) && model.nextIsPossible()) {
+				Logger.log(LogLevel.INFO, "Player", "End move for " + player.getName());
 				break;
 			}
 			// merge
