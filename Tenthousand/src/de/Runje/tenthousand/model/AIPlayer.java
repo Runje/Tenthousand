@@ -11,7 +11,6 @@ public class AIPlayer extends Player {
 	public AIPlayer(Player player, IStrategy strategy) {
 		super(player);
 		this.strategy = strategy;
-		this.human = false;
 	}
 	/**
 	 * @return the strategy

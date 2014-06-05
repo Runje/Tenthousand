@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.JToggleButton;
 
 import de.Runje.tenthousand.model.DiceState;
 import de.Runje.tenthousand.model.Rules;

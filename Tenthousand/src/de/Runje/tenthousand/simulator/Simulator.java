@@ -13,7 +13,6 @@ import de.Runje.tenthousand.model.GameModel;
 import de.Runje.tenthousand.model.IStrategy;
 import de.Runje.tenthousand.model.MyStrategy;
 import de.Runje.tenthousand.model.Player;
-import de.Runje.tenthousand.model.PlayerHandler;
 import de.Runje.tenthousand.observer.IObserver;
 
 public class Simulator implements IObserver{

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import de.Runje.tenthousand.controller.Action;
 import de.Runje.tenthousand.controller.ActionHandler;
-import de.Runje.tenthousand.logger.LogLevel;
-import de.Runje.tenthousand.logger.Logger;
 import de.Runje.tenthousand.observer.Observable;
 
 public class GameModel extends Observable{

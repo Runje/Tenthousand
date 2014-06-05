@@ -42,6 +42,7 @@ public class ActionHandler {
 	public void executeRoll(GameModel model, Player player) {
 		model.playerHandler.rollDices(player);
 		model.takeover = false;
+		Logger.log(LogLevel.INFO, "ActionHandler", model.dices.getDices().toString());
 		model.notifyObservers();
 	}
 	
