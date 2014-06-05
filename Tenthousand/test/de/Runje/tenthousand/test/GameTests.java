@@ -103,10 +103,14 @@ public class GameTests {
 		changeDice(3,1);
 		changeDice(4,2);
 		// first three dices must be fixed
-		assertEquals(DiceState.FIX, model.dices.getDices().get(0).getState());
-		assertEquals(DiceState.FIX, model.dices.getDices().get(1).getState());
-		assertEquals(DiceState.FIX, model.dices.getDices().get(2).getState());
+		assertEquals(DiceState.FIX, getState(0));
+		assertEquals(DiceState.FIX, getState(1));
+		assertEquals(DiceState.FIX, getState(0));
 		assertEquals(model.getPoints(), 1100);
+	}
+	
+	private DiceState getState(int i) {
+		return model.dices.getDices().get(i).getState();
 	}
 	
 	@Test
@@ -148,27 +152,49 @@ public class GameTests {
 		playerHandler.checkIfFinished(model.getPlayingPlayer());
 		// Not finished
 		assertFalse(model.getPlayingPlayer().isFinished());
+		assertTrue(model.isPossibleToRoll());
 		changeRolls(Rules.MaxRolls);
 		playerHandler.checkIfFinished(model.getPlayingPlayer());
 		// finished
 		assertTrue(model.getPlayingPlayer().isFinished());
+		assertFalse(model.isPossibleToRoll());
 	}
 	
 	@Test
 	public void threeStrikes() {
 		changeDice(0,3);
-		changeDice(1,1);
+		changeDice(1,2);
 		changeDice(2,4);
 		changeDice(3,3);
 		changeDice(4,2);
 		Player player = model.getPlayingPlayer();
 		player.setAllPoints(5000);
-		player.setStrikes(2);
-		System.out.println(player.getName());
+		player.setStrikes(Rules.MaxStrikes - 1);
+		//gets a strike
+		assertEquals(0, model.getPoints());
 		actionHandler.executeAction(Action.Next, model);
-		System.out.println(player.getName());
 		assertEquals(0, player.getPoints());
 		assertEquals(0, player.getStrikes());
+	}
+	
+	@Test
+	public void allPointsRollAgain() {
+		changeDice(0,1);
+		changeDice(1,1);
+		changeDice(2,5);
+		changeDice(3,1);
+		changeDice(4,1);
+		//Even if it was the last roll
+		changeRolls(Rules.MaxRolls);
+		assertTrue(model.isPossibleToRoll());
+		
+		actionHandler.executeAction(Action.Roll, model);
+		// No dice is allowed to be fixed
+		for (int i = 0; i < 5; i++) {
+			assertNotEquals(DiceState.FIX, getState(i));
+		}
+		// first roll again
+		assertEquals(model.getPlayingPlayer().getRolls(), 1);
 	}
 	@Test
 	public void releaseDices() {
