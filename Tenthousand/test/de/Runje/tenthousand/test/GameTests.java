@@ -9,6 +9,8 @@ import org.junit.Test;
 
 import de.Runje.tenthousand.controller.Action;
 import de.Runje.tenthousand.controller.ActionHandler;
+import de.Runje.tenthousand.logger.LogLevel;
+import de.Runje.tenthousand.logger.Logger;
 import de.Runje.tenthousand.model.AIPlayer;
 import de.Runje.tenthousand.model.Dice;
 import de.Runje.tenthousand.model.DiceState;
@@ -27,7 +29,7 @@ public class GameTests {
 	public void setUp() throws Exception {
 		ArrayList<Player> players = new ArrayList<Player>();
 		players.add(new HumanPlayer("Thomas"));
-		players.add(new AIPlayer("Milena", new MyStrategy()));
+		players.add(new HumanPlayer("Milena"));
 		model = new GameModel(players, new Rules());
 	}
 
@@ -72,6 +74,47 @@ public class GameTests {
 		}
 	}
 	
+	@Test
+	public void TakeoverNotPossible() {
+		// Not possible at the beginning
+		assertFalse(model.isPossibleToTakeOver());
+		
+		changeDice(0,1);
+		changeDice(1,1);
+		changeRolls(3);
+		actionHandler.executeAction(Action.Next, model);
+		//not possible after 200 points
+		assertFalse(model.isPossibleToTakeOver());
+		assertEquals(model.getPoints(), 0);
+	}
+	
+	@Test
+	public void TakeoverPossible() {
+		changeDice(0,1);
+		changeDice(1,1);
+		changeDice(2,1);
+		// Possible after more than 300 points
+		actionHandler.executeAction(Action.Next, model);
+		assertTrue(model.isPossibleToTakeOver());
+		actionHandler.executeAction(Action.Takeover, model);
+		simulateRoll();
+		changeRolls(1);
+		changeDice(3,1);
+		changeDice(4,2);
+		// first three dices must be fixed
+		assertEquals(DiceState.FIX, model.dices.getDices().get(0).getState());
+		assertEquals(DiceState.FIX, model.dices.getDices().get(1).getState());
+		assertEquals(DiceState.FIX, model.dices.getDices().get(2).getState());
+		assertEquals(model.getPoints(), 1100);
+	}
+
+	private void simulateRoll() {
+		model.diceHandler.setAllPoints(model.diceHandler.getAllPoints() + model.diceHandler.getNewPoints());
+		model.diceHandler.setNewPoints(0);
+		model.takeover = false;
+		model.getPlayingPlayer().setRolls(model.getPlayingPlayer().getRolls() + 1);
+	}
+
 	private void changeDice(int index, int number) {
 		changeDice(index, number, DiceState.NO_POINTS);
 		model.diceHandler.update();
@@ -80,6 +123,11 @@ public class GameTests {
 		Dice d = model.dices.getDices().get(index);
 		d.setNumber(number);
 		d.setState(state);
+		model.diceHandler.update();
 	}
 
+	private void changeRolls(int i) {
+		model.getPlayingPlayer().setRolls(3);
+		model.diceHandler.update();
+	}
 }
