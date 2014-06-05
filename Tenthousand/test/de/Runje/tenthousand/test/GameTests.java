@@ -35,15 +35,16 @@ public class GameTests {
 	public void mergeTwoFives() {
 		changeDice(0, 5);
 		changeDice(1, 5);
-		model.diceHandler.update();
 		
 		assertEquals(100, model.getPoints());
 		assertTrue(model.isPossibleToMerge());
+		assertEquals(model.getFreeDices(), 3);
 		
 		actionHandler.executeAction(Action.Merge, model);
 
 		assertEquals(100, model.getPoints());
 		assertFalse(model.isPossibleToMerge());
+		assertEquals(model.getFreeDices(), 4);
 	}
 	
 	@Test
@@ -52,6 +53,7 @@ public class GameTests {
 		changeDice(1,5, DiceState.FIX);
 		changeDice(2,5);
 		assertFalse(model.isPossibleToMerge());
+		assertEquals(model.getFreeDices(), 2);
 	}
 	
 	@Test
@@ -72,6 +74,7 @@ public class GameTests {
 	
 	private void changeDice(int index, int number) {
 		changeDice(index, number, DiceState.NO_POINTS);
+		model.diceHandler.update();
 	}
 	private void changeDice(int index, int number, DiceState state) {
 		Dice d = model.dices.getDices().get(index);
