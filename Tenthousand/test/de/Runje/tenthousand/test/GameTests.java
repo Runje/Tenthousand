@@ -75,7 +75,7 @@ public class GameTests {
 	}
 	
 	@Test
-	public void TakeoverNotPossible() {
+	public void takeoverNotPossible() {
 		// Not possible at the beginning
 		assertFalse(model.isPossibleToTakeOver());
 		
@@ -89,7 +89,7 @@ public class GameTests {
 	}
 	
 	@Test
-	public void TakeoverPossible() {
+	public void takeoverPossible() {
 		changeDice(0,1);
 		changeDice(1,1);
 		changeDice(2,1);
@@ -106,6 +106,51 @@ public class GameTests {
 		assertEquals(DiceState.FIX, model.dices.getDices().get(1).getState());
 		assertEquals(DiceState.FIX, model.dices.getDices().get(2).getState());
 		assertEquals(model.getPoints(), 1100);
+	}
+	
+	@Test
+	public void gameEnd() {
+		assertFalse(model.isGameFinished());
+		model.getPlayingPlayer().setAllPoints(Rules.WinPoints);
+		changeRolls(2);
+		actionHandler.executeAction(Action.Next, model);
+		assertFalse(model.isGameFinished());
+		actionHandler.executeAction(Action.Roll, model);
+		assertFalse(model.isGameFinished());
+		actionHandler.executeAction(Action.Next, model);
+		actionHandler.executeAction(Action.Next, model);
+		//Game ends if one round is finished and one player has more than the given points
+		assertTrue(model.isGameFinished());
+		
+	}
+	
+	@Test
+	public void releaseDices() {
+		changeDice(0,1);
+		changeDice(1,1);
+		changeDice(2,5);
+		changeDice(3,1);
+		
+		//free Dices
+		assertEquals(1, model.getFreeDices());
+		//Points
+		assertEquals(1050, model.getPoints());
+		Action a = Action.Switch;
+		a.index = 1;
+		actionHandler.executeAction(a, model);
+		//free Dices
+		assertEquals(2, model.getFreeDices());
+		//Points
+		assertEquals(250, model.getPoints());
+
+		//Switch back
+		actionHandler.executeAction(a, model);
+		//free Dices
+		assertEquals(1, model.getFreeDices());
+		//Points
+		assertEquals(1050, model.getPoints());
+		
+		
 	}
 
 	private void simulateRoll() {
