@@ -68,7 +68,8 @@ public class ActionHandler {
 			if (model.getPlayingPlayer().getStrikes() == Rules.MaxStrikes) {
 				Logger.log(LogLevel.INFO, "ActionHandler", Rules.MaxStrikes + ". Strike, resetting points for " + model.getPlayingPlayer().getName());
 				model.getPlayingPlayer().setAllPoints(0);
-			};
+				model.playerHandler.resetStrikes(model.getPlayingPlayer());
+			}
 		} else {
 			//add points
 			model.getPlayingPlayer().addPoints(points);

@@ -153,6 +153,23 @@ public class GameTests {
 		// finished
 		assertTrue(model.getPlayingPlayer().isFinished());
 	}
+	
+	@Test
+	public void threeStrikes() {
+		changeDice(0,3);
+		changeDice(1,1);
+		changeDice(2,4);
+		changeDice(3,3);
+		changeDice(4,2);
+		Player player = model.getPlayingPlayer();
+		player.setAllPoints(5000);
+		player.setStrikes(2);
+		System.out.println(player.getName());
+		actionHandler.executeAction(Action.Next, model);
+		System.out.println(player.getName());
+		assertEquals(0, player.getPoints());
+		assertEquals(0, player.getStrikes());
+	}
 	@Test
 	public void releaseDices() {
 		changeDice(0,1);
