@@ -34,7 +34,7 @@ public class PlayerHandler {
 		checkIfFinished(player);
 	}
 	
-	private void checkIfFinished(Player player) {
+	public void checkIfFinished(Player player) {
 		if (diceHandler.getNewPoints() == 0) {
 			player.setRolls(0);
 			diceHandler.resetPoints();

@@ -18,6 +18,7 @@ import de.Runje.tenthousand.model.GameModel;
 import de.Runje.tenthousand.model.HumanPlayer;
 import de.Runje.tenthousand.model.MyStrategy;
 import de.Runje.tenthousand.model.Player;
+import de.Runje.tenthousand.model.PlayerHandler;
 import de.Runje.tenthousand.model.Rules;
 
 public class GameTests {
@@ -125,6 +126,34 @@ public class GameTests {
 	}
 	
 	@Test
+	public void turnEndNoPoints() {
+		changeDice(0,3);
+		changeDice(1,2);
+		changeDice(2,4);
+		changeDice(3,3);
+		changeDice(4,2);
+		PlayerHandler playerHandler = new PlayerHandler(model.diceHandler, model);
+		playerHandler.checkIfFinished(model.getPlayingPlayer());
+		assertTrue(model.getPlayingPlayer().isFinished());
+		
+	}
+	@Test
+	public void turnEndMaxRolls() {
+		changeDice(0,3);
+		changeDice(1,1);
+		changeDice(2,4);
+		changeDice(3,3);
+		changeDice(4,2);
+		PlayerHandler playerHandler = new PlayerHandler(model.diceHandler, model);
+		playerHandler.checkIfFinished(model.getPlayingPlayer());
+		// Not finished
+		assertFalse(model.getPlayingPlayer().isFinished());
+		changeRolls(Rules.MaxRolls);
+		playerHandler.checkIfFinished(model.getPlayingPlayer());
+		// finished
+		assertTrue(model.getPlayingPlayer().isFinished());
+	}
+	@Test
 	public void releaseDices() {
 		changeDice(0,1);
 		changeDice(1,1);
@@ -149,8 +178,6 @@ public class GameTests {
 		assertEquals(1, model.getFreeDices());
 		//Points
 		assertEquals(1050, model.getPoints());
-		
-		
 	}
 
 	private void simulateRoll() {
