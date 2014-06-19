@@ -13,6 +13,12 @@ public class AIPlayer extends Player {
 		this.strategy = strategy;
 	}
 	/**
+	 * @param strategy the strategy to set
+	 */
+	public void setStrategy(IStrategy strategy) {
+		this.strategy = strategy;
+	}
+	/**
 	 * @return the strategy
 	 */
 	public IStrategy getStrategy() {

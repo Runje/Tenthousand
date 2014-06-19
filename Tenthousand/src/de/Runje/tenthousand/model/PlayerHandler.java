@@ -10,8 +10,8 @@ public class PlayerHandler {
 	public DiceHandler diceHandler;
 	public GameModel model;
 
-	public PlayerHandler(DiceHandler diceHandler, GameModel model) {
-		this.diceHandler = diceHandler;
+	public PlayerHandler(GameModel model) {
+		this.diceHandler = model.diceHandler;
 		this.model = model;
 	}
 	
@@ -58,36 +58,51 @@ public class PlayerHandler {
 	public void makeTurnFor(Player player, IStrategy strategy) {
 		Logger.log(LogLevel.INFO, "Player", "Make turn for " + player.getName() + "Rolls: " + player.getRolls() + " Strikes: " + player.getStrikes());
 		Logger.log(LogLevel.INFO, "Player", "Points: " + model.getPoints() + " Dices: " + model.dices);
-		ActionHandler actionHandler = new ActionHandler();
+		makeTakeover(player, strategy);
+		while (!player.isFinished()) {
+			makeOneMove(player, strategy);
+		}
+	}
+	
+	public void makeTakeover(Player player, IStrategy strategy) {
 		// take over
 		if (model.isPossibleToTakeOver()) {
 			if (strategy.takeover(model)) {
-				player.willTakeOver();
-			}
-		}
-		while (!player.isFinished()) {
-			// release dices
-			for (int i : strategy.releaseDices(model)) {
-				Action a = Action.Switch;
-				a.index = i;
-				actionHandler.executeAction(a, model);
-			}
-			// roll
-			actionHandler.executeRoll(model, player);
-			// next
-			Logger.log(LogLevel.INFO, "Player", "Points " + model.getPoints());
-			if (strategy.endMove(model) && model.nextIsPossible()) {
-				Logger.log(LogLevel.INFO, "Player", "End move for " + player.getName());
-				break;
-			}
-			// merge
-			if (model.isPossibleToMerge() && strategy.merge(model)) {
-				actionHandler.executeAction(Action.Merge, model);
+				player.setWillTakeOver(true);
 			}
 		}
 	}
+	
+	public void makeOneMove(AIPlayer p) {
+		makeOneMove(p, p.getStrategy());
+	}
+	public void makeOneMove(Player player, IStrategy strategy) {
+		ActionHandler actionHandler = new ActionHandler();
+		// release dices
+		if (strategy.endMove(model) && model.nextIsPossible()) {
+			Logger.log(LogLevel.INFO, "Player", "End move for " + player.getName());
+			player.setFinished(true);
+			return;
+		} else if (model.isPossibleToMerge() && strategy.merge(model)) {
+			// merge
+			actionHandler.executeAction(Action.Merge, model);
+		}
+		for (int i : strategy.releaseDices(model)) {
+			Action a = Action.Switch;
+			a.index = i;
+			actionHandler.executeAction(a, model);
+		}
+		// roll
+		actionHandler.executeRoll(model, player);
+		// next
+		Logger.log(LogLevel.INFO, "Player", "Points " + model.getPoints());
+	}
 	public void makeTurnFor(AIPlayer player) {
 		makeTurnFor(player, player.getStrategy());
+	}
+
+	public void makeTakeover(AIPlayer player) {
+		makeTakeover(player, player.getStrategy());
 	}
 
 }

@@ -22,7 +22,8 @@ public class Tenthousand {
 		
 		ArrayList<Player> players = new ArrayList<Player>();
 		players.add(new HumanPlayer("Thomas"));
-		players.add(new AIPlayer("Milena", new MyStrategy()));
+		players.add(new AIPlayer("Computer", new MyStrategy()));
+		players.add(new Player("Milena"));
 		GameModel model = new GameModel(players, new Rules());
 		
 		Controller controller = new Controller(model);

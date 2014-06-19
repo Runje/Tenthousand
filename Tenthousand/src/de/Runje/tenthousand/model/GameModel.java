@@ -32,7 +32,7 @@ public class GameModel extends Observable{
 		this.dices = new Dices();
 		this.takeover = false;
 		this.diceHandler = new DiceHandler(dices);
-		this.playerHandler = new PlayerHandler(diceHandler, this);
+		this.playerHandler = new PlayerHandler(this);
 		this.gameFinished = false;
 	}
 	
@@ -48,7 +48,7 @@ public class GameModel extends Observable{
 		this.dices = new Dices(model.dices);
 		this.takeover = model.takeover;
 		this.diceHandler = new DiceHandler(model.dices);
-		this.playerHandler = new PlayerHandler(diceHandler, this);
+		this.playerHandler = new PlayerHandler(this);
 		this.gameFinished = model.gameFinished;
 	}
 
@@ -85,7 +85,7 @@ public class GameModel extends Observable{
 		}
 	}
 
-	private void handleAIPlayer() {
+	public void handleAIPlayer() {
 		AIPlayer player = (AIPlayer) getPlayingPlayer();
 		playerHandler.makeTurnFor(player);
 		new ActionHandler().executeAction(Action.Next, this);

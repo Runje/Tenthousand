@@ -24,7 +24,9 @@ import de.Runje.tenthousand.model.Rules;
 public class GameTests {
 
 	private GameModel model;
+	private TestHelper helper;
 	private ActionHandler actionHandler = new ActionHandler();
+	private int i = 0;
 
 	@Before
 	public void setUp() throws Exception {
@@ -32,12 +34,13 @@ public class GameTests {
 		players.add(new HumanPlayer("Thomas"));
 		players.add(new HumanPlayer("Milena"));
 		model = new GameModel(players, new Rules());
+		helper = new TestHelper(model);
 	}
 
 	@Test
 	public void mergeTwoFives() {
-		changeDice(0, 5);
-		changeDice(1, 5);
+		helper.changeDice(0, 5);
+		helper.changeDice(1, 5);
 		
 		assertEquals(100, model.getPoints());
 		assertTrue(model.isPossibleToMerge());
@@ -52,9 +55,9 @@ public class GameTests {
 	
 	@Test
 	public void notMergeTwoFives() {
-		changeDice(0,5, DiceState.FIX);
-		changeDice(1,5, DiceState.FIX);
-		changeDice(2,5);
+		helper.changeDice(0,5, DiceState.FIX);
+		helper.changeDice(1,5, DiceState.FIX);
+		helper.changeDice(2,5);
 		assertFalse(model.isPossibleToMerge());
 		assertEquals(model.getFreeDices(), 2);
 	}
@@ -80,8 +83,8 @@ public class GameTests {
 		// Not possible at the beginning
 		assertFalse(model.isPossibleToTakeOver());
 		
-		changeDice(0,1);
-		changeDice(1,1);
+		helper.changeDice(0,1);
+		helper.changeDice(1,1);
 		changeRolls(3);
 		actionHandler.executeAction(Action.Next, model);
 		//not possible after 200 points
@@ -91,27 +94,25 @@ public class GameTests {
 	
 	@Test
 	public void takeoverPossible() {
-		changeDice(0,1);
-		changeDice(1,1);
-		changeDice(2,1);
+		helper.changeDice(0,1);
+		helper.changeDice(1,1);
+		helper.changeDice(2,1);
 		// Possible after more than 300 points
 		actionHandler.executeAction(Action.Next, model);
 		assertTrue(model.isPossibleToTakeOver());
 		actionHandler.executeAction(Action.Takeover, model);
 		simulateRoll();
 		changeRolls(1);
-		changeDice(3,1);
-		changeDice(4,2);
+		helper.changeDice(3,1);
+		helper.changeDice(4,2);
 		// first three dices must be fixed
-		assertEquals(DiceState.FIX, getState(0));
-		assertEquals(DiceState.FIX, getState(1));
-		assertEquals(DiceState.FIX, getState(0));
+		assertEquals(DiceState.FIX, helper.getState(0));
+		assertEquals(DiceState.FIX, helper.getState(1));
+		assertEquals(DiceState.FIX, helper.getState(0));
 		assertEquals(model.getPoints(), 1100);
 	}
 	
-	private DiceState getState(int i) {
-		return model.dices.getDices().get(i).getState();
-	}
+
 	
 	@Test
 	public void gameEnd() {
@@ -131,24 +132,24 @@ public class GameTests {
 	
 	@Test
 	public void turnEndNoPoints() {
-		changeDice(0,3);
-		changeDice(1,2);
-		changeDice(2,4);
-		changeDice(3,3);
-		changeDice(4,2);
-		PlayerHandler playerHandler = new PlayerHandler(model.diceHandler, model);
+		helper.changeDice(0,3);
+		helper.changeDice(1,2);
+		helper.changeDice(2,4);
+		helper.changeDice(3,3);
+		helper.changeDice(4,2);
+		PlayerHandler playerHandler = new PlayerHandler(model);
 		playerHandler.checkIfFinished(model.getPlayingPlayer());
 		assertTrue(model.getPlayingPlayer().isFinished());
 		
 	}
 	@Test
 	public void turnEndMaxRolls() {
-		changeDice(0,3);
-		changeDice(1,1);
-		changeDice(2,4);
-		changeDice(3,3);
-		changeDice(4,2);
-		PlayerHandler playerHandler = new PlayerHandler(model.diceHandler, model);
+		helper.changeDice(0,3);
+		helper.changeDice(1,1);
+		helper.changeDice(2,4);
+		helper.changeDice(3,3);
+		helper.changeDice(4,2);
+		PlayerHandler playerHandler = new PlayerHandler(model);
 		playerHandler.checkIfFinished(model.getPlayingPlayer());
 		// Not finished
 		assertFalse(model.getPlayingPlayer().isFinished());
@@ -162,11 +163,11 @@ public class GameTests {
 	
 	@Test
 	public void threeStrikes() {
-		changeDice(0,3);
-		changeDice(1,2);
-		changeDice(2,4);
-		changeDice(3,3);
-		changeDice(4,2);
+		helper.changeDice(0,3);
+		helper.changeDice(1,2);
+		helper.changeDice(2,4);
+		helper.changeDice(3,3);
+		helper.changeDice(4,2);
 		Player player = model.getPlayingPlayer();
 		player.setAllPoints(5000);
 		player.setStrikes(Rules.MaxStrikes - 1);
@@ -179,29 +180,34 @@ public class GameTests {
 	
 	@Test
 	public void allPointsRollAgain() {
-		changeDice(0,1);
-		changeDice(1,1);
-		changeDice(2,5);
-		changeDice(3,1);
-		changeDice(4,1);
+		helper.changeDice(0,1);
+		helper.changeDice(1,1);
+		helper.changeDice(2,5);
+		helper.changeDice(3,1);
+		helper.changeDice(4,1);
 		//Even if it was the last roll
 		changeRolls(Rules.MaxRolls);
 		assertTrue(model.isPossibleToRoll());
-		
+		Player player = model.getPlayingPlayer();
 		actionHandler.executeAction(Action.Roll, model);
 		// No dice is allowed to be fixed
 		for (int i = 0; i < 5; i++) {
-			assertNotEquals(DiceState.FIX, getState(i));
+			assertNotEquals(DiceState.FIX, helper.getState(i));
 		}
-		// first roll again
-		assertEquals(model.getPlayingPlayer().getRolls(), 1);
+		if (player.isFinished()) {
+			// zero points
+			assertEquals(player.getRolls(), 0);
+		} else {
+			// first roll again
+			assertEquals(player.getRolls(), 1);
+		}
 	}
 	@Test
 	public void releaseDices() {
-		changeDice(0,1);
-		changeDice(1,1);
-		changeDice(2,5);
-		changeDice(3,1);
+		helper.changeDice(0,1);
+		helper.changeDice(1,1);
+		helper.changeDice(2,5);
+		helper.changeDice(3,1);
 		
 		//free Dices
 		assertEquals(1, model.getFreeDices());
@@ -228,17 +234,6 @@ public class GameTests {
 		model.diceHandler.setNewPoints(0);
 		model.takeover = false;
 		model.getPlayingPlayer().setRolls(model.getPlayingPlayer().getRolls() + 1);
-	}
-
-	private void changeDice(int index, int number) {
-		changeDice(index, number, DiceState.NO_POINTS);
-		model.diceHandler.update();
-	}
-	private void changeDice(int index, int number, DiceState state) {
-		Dice d = model.dices.getDices().get(index);
-		d.setNumber(number);
-		d.setState(state);
-		model.diceHandler.update();
 	}
 
 	private void changeRolls(int i) {

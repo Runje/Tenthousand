@@ -30,10 +30,12 @@ public class MyStrategy extends DefaultStrategy {
 		}
 		return false;
 	}
-
+	
 	@Override
-	public int[] releaseDices(GameModel model) {
-		return new int[0];
+	public boolean merge(GameModel model) {
+		if (model.getFreeDices() == 0) {
+			return false;
+		}
+		return true;
 	}
-
 }
