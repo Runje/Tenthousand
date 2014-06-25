@@ -101,7 +101,10 @@ public class GameTests {
 		actionHandler.executeAction(Action.Next, model);
 		assertTrue(model.isPossibleToTakeOver());
 		actionHandler.executeAction(Action.Takeover, model);
-		simulateRoll();
+		if (model.getPlayingPlayer().isFinished()) {
+			takeoverPossible();
+		}
+		//simulateRoll();
 		changeRolls(1);
 		helper.changeDice(3,1);
 		helper.changeDice(4,2);

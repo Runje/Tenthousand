@@ -42,7 +42,7 @@ public class Simulator implements IObserver{
 	/**
 	 * Number of iterations for calculation
 	 */
-	private int n = 100000;
+	private int n = 10000;
 
 	private IStrategy strategy;
 

@@ -37,6 +37,7 @@ public class ActionHandler {
 
 	private void executeTakeover(GameModel model) {
 		model.getPlayingPlayer().takeOver();
+		executeRoll(model, model.getPlayingPlayer());
 	}
 
 	public void executeRoll(GameModel model, Player player) {
