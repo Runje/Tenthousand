@@ -109,6 +109,7 @@ public class DiceHandler {
 			dices.reset();
 		}
 		dices.roll();
+		Logger.log(LogLevel.DEBUG, "DiceHandler", "Rolled dices: " + dices);
 		update();
 	}
 

@@ -42,7 +42,7 @@ public class Simulator implements IObserver{
 	/**
 	 * Number of iterations for calculation
 	 */
-	private int n = 3;
+	private int n = 100000;
 
 	private IStrategy strategy;
 
@@ -126,6 +126,10 @@ public class Simulator implements IObserver{
 	}
 
 	
+	public void setIterations(int n) {
+		this.n = n;
+	}
+	
 	public void setName(String name) {
 		player.setName(name);
 	}
@@ -148,6 +152,7 @@ public class Simulator implements IObserver{
 		LogLevel level = Logger.logLevel;
 		Logger.logLevel = LogLevel.WARN;
 		for (int i = 0; i < n; i++) {
+			Logger.log(LogLevel.DEBUG, "Simulator", Integer.toString(i));
 			if (simulateRoll() >= points) {
 				count++;
 			}

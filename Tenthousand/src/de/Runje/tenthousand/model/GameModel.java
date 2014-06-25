@@ -47,7 +47,9 @@ public class GameModel extends Observable{
 		this.rules = model.rules;
 		this.dices = new Dices(model.dices);
 		this.takeover = model.takeover;
-		this.diceHandler = new DiceHandler(model.dices);
+		this.diceHandler = new DiceHandler(this.dices);
+		this.diceHandler.setAllPoints(model.diceHandler.getAllPoints());
+		this.diceHandler.setNewPoints(model.diceHandler.getNewPoints());
 		this.playerHandler = new PlayerHandler(this);
 		this.gameFinished = model.gameFinished;
 	}
