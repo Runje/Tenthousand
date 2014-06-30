@@ -19,14 +19,12 @@ public class ALDiceSelect implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		JComboBox cb = (JComboBox) e.getSource();
-		switch (cb.getName()) {
-			case "Dice":
+		if (cb.getName().equals("Dice")) {
 				simulator.setDice(cb.getSelectedIndex());
-				break;
-			case "Number":
+		} else if (cb.getName().equals("Number"))
+		{
 				simulator.setNumber((Integer) cb.getSelectedItem());
-				break;
-			case "State":
+		} else if (cb.getName().equals("State")) {
 				simulator.setState((DiceState) cb.getSelectedItem());
 		}
 	}

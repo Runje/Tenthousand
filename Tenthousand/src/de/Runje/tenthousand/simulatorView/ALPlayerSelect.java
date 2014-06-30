@@ -18,18 +18,14 @@ public class ALPlayerSelect implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		JComboBox cb = (JComboBox) e.getSource();
-		switch (cb.getName()) {
-			case "Name":
+		if (cb.getName().equals("Name")) {
 				simulator.setName((String)cb.getSelectedItem());
-				break;
-			case "Rolls":
-				Logger.log(LogLevel.DEBUG, "Simulator", "Rolls set to " + (int) cb.getSelectedItem());
-				simulator.setRolls((int) cb.getSelectedItem());
-				break;
-			case "Strikes":
-				Logger.log(LogLevel.DEBUG, "Simulator", "Strikes set to " + (int) cb.getSelectedItem());
-				simulator.setStrikes((int) cb.getSelectedItem());
-				break;
+		} else if (cb.getName().equals("Rolls")) {
+				Logger.log(LogLevel.DEBUG, "Simulator", "Rolls set to " + (Integer) cb.getSelectedItem());
+				simulator.setRolls((Integer) cb.getSelectedItem());
+		} else if (cb.getName().equals("Strikes")) {
+				Logger.log(LogLevel.DEBUG, "Simulator", "Strikes set to " + (Integer) cb.getSelectedItem());
+				simulator.setStrikes((Integer) cb.getSelectedItem());
 		}
 	}
 

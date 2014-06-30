@@ -20,15 +20,10 @@ public class ALStrategy implements ActionListener {
 		JComboBox cb = (JComboBox) e.getSource();
 		String s = (String) cb.getSelectedItem();
 		
-		switch (s) {
-			case "MyStrategy":
+		if (s.equals( "MyStrategy")) {
 				simulator.setStrategy(new MyStrategy());
-				System.out.println("Mystrategy");
-				break;
-			case "DefaultStrategy":
-				System.out.println("defaultstrategy");
+		} else if (s.equals("DefaultStrategy")) {
 				simulator.setStrategy(new DefaultStrategy());
-				break;
 		}
 	}
 
