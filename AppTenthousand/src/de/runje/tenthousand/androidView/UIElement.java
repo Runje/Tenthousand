@@ -1,6 +1,7 @@
 package de.runje.tenthousand.androidView;
 
 import android.app.Activity;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import de.runje.tenthousand.R;
@@ -11,7 +12,17 @@ public class UIElement {
 	
 	public static ImageView[] dices;
 	
-	private static Activity activity;
+	public static TextView points;
+	
+	public static Activity activity;
+
+	public static Button next;
+
+	public static Button takeover;
+
+	public static Button merge;
+
+	public static Button roll;
 	
 	public static void init(Activity a) {
 		activity = a;
@@ -25,5 +36,13 @@ public class UIElement {
 		dices[2] = (ImageView) activity.findViewById(R.id.dice3);
 		dices[3] = (ImageView) activity.findViewById(R.id.dice4);
 		dices[4] = (ImageView) activity.findViewById(R.id.dice5);
+		
+		points = (TextView) activity.findViewById(R.id.textViewPoints);
+		
+		next = (Button) activity.findViewById(R.id.buttonNext);
+		takeover = (Button) activity.findViewById(R.id.buttonTakeover);
+		roll = (Button) activity.findViewById(R.id.buttonRoll);
+		merge = (Button) activity.findViewById(R.id.buttonMerge);
+		
 	}
 }

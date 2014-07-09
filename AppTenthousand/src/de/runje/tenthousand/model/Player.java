@@ -3,6 +3,15 @@ package de.runje.tenthousand.model;
 
 public class Player {
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return name + ", points: " + allPoints + ", rolls="
+				+ rolls + ", strikes=" + strikes;
+	}
+
 	/**
 	 * Points of the Player
 	 */

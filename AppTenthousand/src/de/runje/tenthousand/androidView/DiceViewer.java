@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Handler.Callback;
 import android.os.Message;
@@ -57,6 +58,9 @@ public class DiceViewer {
 
 	private void showDice(int dice, int n) {
 				switch (n) {
+				case 0:
+					UIElement.dices[dice].setImageResource(R.drawable.dice3droll);
+					break;
 				case 1:
 					UIElement.dices[dice].setImageResource(R.drawable.one);
 					break;
@@ -76,6 +80,12 @@ public class DiceViewer {
 					UIElement.dices[dice].setImageResource(R.drawable.six);
 					break;
 				default:
+				}
+				
+				if (model.dices.getDices().get(dice).isRollable()) {
+					UIElement.dices[dice].setBackgroundColor(Color.GRAY);
+				} else {
+					UIElement.dices[dice].setBackgroundColor(Color.WHITE);
 				}
 	}
 
@@ -112,12 +122,31 @@ public class DiceViewer {
 		}
 	}
 
-	public void test() {
-		Log.d("Test", Boolean.toString(UIElement.dices[0] == null));
-		Log.d("Test", Boolean.toString(UIElement.dices[1] == null));
-		Log.d("Test", Boolean.toString(UIElement.dices[2] == null));
-		Log.d("Test", Boolean.toString(UIElement.dices[3] == null));
-		Log.d("Test", Boolean.toString(UIElement.dices[4] == null));
+	public void takeover() {
+		// animate roll
+				rollAllDices();
+				// roll
+				timer.schedule(new TimerTask() {
+
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						new ActionHandler().executeAction(Action.Takeover, model);
+					}
+				}, 10 * 100);
 		
 	}
+
+	private void rollAllDices() {
+		ArrayList<Dice> dices = model.dices.getDices();
+
+		for (int i = 0; i < dices.size(); i++) {
+				rollDice(i);
+		}
+	}
+
+	public void merge() {
+		new ActionHandler().executeAction(Action.Merge, model);
+	}
+
 }
