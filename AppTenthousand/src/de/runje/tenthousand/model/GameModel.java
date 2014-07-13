@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import de.runje.tenthousand.controller.Action;
 import de.runje.tenthousand.controller.ActionHandler;
+import de.runje.tenthousand.logger.LogLevel;
+import de.runje.tenthousand.logger.Logger;
 import de.runje.tenthousand.observer.Observable;
 
 public class GameModel extends Observable{
@@ -127,7 +129,7 @@ public class GameModel extends Observable{
 	}
 	
 	public boolean nextIsPossible() {
-		return !getPlayingPlayer().hasNotRolled()  && !isGameFinished();
+		return !getPlayingPlayer().hasNotRolled()  && !isGameFinished() && (getPoints() >= 300 || getPlayingPlayer().isFinished());
 	}
 
 	public boolean isPossibleToMerge() {
@@ -147,6 +149,14 @@ public class GameModel extends Observable{
 	}
 	public int getFreeDices() {
 		return dices.getFreeDices();
+	}
+
+	public boolean resetDices() {
+		if (dices.areAllFixed() || (getPlayingPlayer().hasNotRolled() && !getPlayingPlayer().willTakeOver())) {
+			return true;
+		}
+		
+		else return false;
 	}
 	
 

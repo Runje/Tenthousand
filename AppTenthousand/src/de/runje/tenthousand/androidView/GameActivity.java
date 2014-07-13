@@ -4,11 +4,15 @@ import java.util.ArrayList;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Intent;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 import de.runje.tenthousand.R;
+import de.runje.tenthousand.model.AIPlayer;
 import de.runje.tenthousand.model.GameModel;
-import de.runje.tenthousand.model.HumanPlayer;
+import de.runje.tenthousand.model.MyStrategy;
 import de.runje.tenthousand.model.Player;
 import de.runje.tenthousand.model.Rules;
 import de.runje.tenthousand.observer.IObserver;
@@ -33,7 +37,19 @@ public class GameActivity extends Activity implements IObserver {
 
 		setContentView(R.layout.activity_game);
 		hideActionBar();
-		initGame();
+		GameUIElement.init(this);
+		
+		Intent intent = getIntent();
+		String[] players = new String[4];
+		boolean[] ai= new boolean[4];
+		for (int i = 0; i < 4; i++) {
+			if (intent.getStringExtra(MainActivity.Player[i]) != null)
+			{
+				players[i] = intent.getStringExtra(MainActivity.Player[i]);
+				ai[i] = intent.getBooleanExtra(MainActivity.IsAi[i], ai[i]);
+			}
+		}
+		initGame(players, ai);
 	}
 
 	private void hideActionBar() {
@@ -48,11 +64,24 @@ public class GameActivity extends Activity implements IObserver {
 		
 	}
 
-	private void initGame() {
-		UIElement.init(this);
+	private void initGame(String[] player, boolean[] ai) {
 		ArrayList<Player> players = new ArrayList<Player>();
-		players.add(new HumanPlayer("Thomas"));
-		players.add(new Player("Milena"));
+		for (int i = 0; i < 4; i++) {
+			if (player[i] != null) {
+				if (ai[i]) {
+					players.add(new AIPlayer(player[i], new MyStrategy()));
+				}
+				else
+				{
+					players.add(new Player(player[i]));
+				}
+			}
+			
+		}
+		for (int i = 0; i < 4 - players.size() ; i++) {
+			GameUIElement.players[3 - i].setVisibility(TextView.INVISIBLE);
+		}
+		
 		this.model = new GameModel(players, new Rules());
 		model.addObserver(this);
 
@@ -61,37 +90,43 @@ public class GameActivity extends Activity implements IObserver {
 		update();
 	}
 
-	@Override
-	protected void onPostCreate(Bundle savedInstanceState) {
-		super.onPostCreate(savedInstanceState);
 
-	}
-
-
-	public void clickRoll(View v) throws InterruptedException {
+	public void clickRoll(View v) {
 		diceViewer.roll();
 	}
 	
-	public void clickNext(View v) throws InterruptedException {
+	public void clickNext(View v) {
 		tenthousandViewer.next();
 	}
 	
-	public void clickTakeover(View v) throws InterruptedException {
+	public void clickTakeover(View v) {
 		diceViewer.takeover();
 	}
 	
-	public void clickMerge(View v) throws InterruptedException {
+	public void clickMerge(View v)  {
 		diceViewer.merge();
 	}
+	
+	public void switchDice1(View v)  {
+		diceViewer.switchDice(0);
+	}
+	
+	public void switchDice2(View v)  {
+		diceViewer.switchDice(1);
+	}
+	
+	public void switchDice3(View v)  {
+		diceViewer.switchDice(2);
+	}
+	
+	public void switchDice4(View v)  {
+		diceViewer.switchDice(3);
+	}
+	
+	public void switchDice5(View v)  {
+		diceViewer.switchDice(4);
+	}
 
-	/**
-	 * Schedules a call to hide() in [delay] milliseconds, canceling any
-	 * previously scheduled calls.
-	 */
-//	private void delayedHide(int delayMillis) {
-//		mHideHandler.removeCallbacks(mHideRunnable);
-//		mHideHandler.postDelayed(mHideRunnable, delayMillis);
-//	}
 
 	@Override
 	public void update() {
@@ -105,7 +140,7 @@ public class GameActivity extends Activity implements IObserver {
 				diceViewer.updateDices();
 				tenthousandViewer.updatePlayers();
 				tenthousandViewer.updateButtons();
-				UIElement.points.setText("Points: " + model.getPoints());
+				GameUIElement.points.setText("Points: " + model.getPoints());
 			}
 		});
 	}

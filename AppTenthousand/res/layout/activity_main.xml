@@ -4,23 +4,142 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="de.runje.tenthousand.androidView.MainActivity"
+    android:background="#0099cc"
     tools:ignore="MergeRootFrame" >
 
-    <TextView
-        android:id="@+id/textViewPlayer1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
-
+        <TextView
+            android:id="@+id/fullscreen_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:keepScreenOn="true"
+            android:text="@string/tenthousand"
+            android:textColor="#33b5e5"
+            android:textSize="50sp"
+            android:textStyle="bold" />
+        
     <Button
         android:id="@+id/buttonStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="false"
+        android:layout_marginTop="150dp"
         android:onClick="clickStart"
-        android:text="Start Tenthousand" />
+        android:text="Play" />
 
+    <TextView
+        android:id="@+id/textViewPlaying"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="300dp"
+        android:text="Playing" />
+
+     <TextView
+         android:id="@+id/textViewPlayer"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignTop="@id/textViewPlaying"
+         android:layout_marginLeft="30dp"
+         android:layout_toRightOf="@+id/textViewPlaying"
+         android:text="Player" />
+
+
+
+
+    <TextView
+        android:id="@+id/textViewAI"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/textViewPlaying"
+        android:layout_marginLeft="150dp"
+        android:layout_toRightOf="@+id/textViewPlayer1"
+        android:text="AI   " />
+
+      <CheckBox
+        android:id="@+id/checkBoxPlaying1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewPlaying" />
+      
+    <TextView
+        android:id="@+id/textViewPlayer1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/checkBoxPlaying1"
+        android:layout_alignLeft="@+id/textViewPlayer"
+        android:onClick="clickEditPlayer"
+        android:clickable="true"
+        android:text="Thomas" />
     
-
+        <CheckBox
+        android:id="@+id/checkBoxAI1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/textViewAI"
+        android:layout_below="@id/textViewAI" />
+        
+        <CheckBox
+        android:id="@+id/checkBoxPlaying2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/checkBoxPlaying1" />
+      
+    <TextView
+        android:id="@+id/textViewPlayer2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/checkBoxPlaying2"
+        android:layout_alignLeft="@+id/textViewPlayer"
+        android:text="Milena" />
+    
+        <CheckBox
+        android:id="@+id/checkBoxAI2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/checkBoxAI1"
+        android:layout_below="@+id/checkBoxAI1" />
+        
+                <CheckBox
+        android:id="@+id/checkBoxPlaying3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/checkBoxPlaying2" />
+      
+    <TextView
+        android:id="@+id/textViewPlayer3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/checkBoxPlaying3"
+        android:layout_alignLeft="@+id/textViewPlayer"
+        android:text="Chipmunk" />
+    
+        <CheckBox
+        android:id="@+id/checkBoxAI3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/checkBoxAI2"
+        android:layout_below="@+id/checkBoxAI2" />
+        
+                <CheckBox
+        android:id="@+id/checkBoxPlaying4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/checkBoxPlaying3" />
+      
+    <TextView
+        android:id="@+id/textViewPlayer4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/checkBoxPlaying4"
+        android:layout_alignLeft="@+id/textViewPlayer"
+        android:text="Shark" />
+    
+        <CheckBox
+        android:id="@+id/checkBoxAI4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/checkBoxAI3"
+        android:layout_below="@+id/checkBoxAI3" />
 </RelativeLayout>
 

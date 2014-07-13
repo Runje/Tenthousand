@@ -1,48 +1,65 @@
 package de.runje.tenthousand.androidView;
 
+import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.view.Window;
+import android.view.WindowManager;
 import de.runje.tenthousand.R;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
+	
+	public final static String Players = "Players";
+	
+	public final static String Player[] = new String[] { "Player1", "Player2", "Player3", "Player4" };
 
+	public final static String IsAi[] = new String[] { "IsAi1", "IsAi2", "IsAi3", "IsAi4" };
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
+        setContentView(R.layout.activity_main);
+		hideActionBar();
+		MainUIElement.init(this);
 	}
 
 
+	private void hideActionBar() {
+		View decorView = getWindow().getDecorView();
+		// Hide the status bar.
+		int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+		decorView.setSystemUiVisibility(uiOptions);
+		// Remember that you should never show the action bar if the
+		// status bar is hidden, so hide that too if necessary.
+		ActionBar actionBar = getActionBar();
+		actionBar.hide();
+	}
 
+	
+	public void clickEditPlayer(View v) {
+		Log.d("Click", "EditField");
+		new EditPlayer().show(getFragmentManager(), "Tag");
+	}
 
 	public void clickStart(View v) {
+		int players = 0;
 		Intent intent = new Intent(this, GameActivity.class);
+		for (int i = 0; i < 4; i++) {
+			if (MainUIElement.playing[i].isChecked()) {
+				players++;
+				intent.putExtra(Player[i], MainUIElement.players[i].getText());
+				intent.putExtra(IsAi[i], MainUIElement.ai[i].isChecked());
+			}
+		}
+		
+		if (players == 0) {
+			// TODO: show dialog
+			return;
+		}
+		intent.putExtra(Players, players);
 		startActivity(intent);
 	}
 }

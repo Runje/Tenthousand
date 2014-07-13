@@ -15,12 +15,12 @@ public class TenthousandViewer {
 	
 	public void updatePlayers() {
 		for (int i = 0; i < model.getPlayers().size(); i++) {
-			UIElement.players[i].setText(model.getPlayers().get(i).toString());
+			GameUIElement.players[i].setText(model.getPlayers().get(i).toString());
 			if (model.getPlayingPlayer() == model.getPlayers().get(i)) {
 				// highlight player which has the turn
-				UIElement.players[i].setBackgroundColor(Color.RED);
+				GameUIElement.players[i].setBackgroundColor(Color.RED);
 			} else {
-				UIElement.players[i].setBackgroundColor(Color.BLUE);
+				GameUIElement.players[i].setBackground(GameUIElement.backgroundColor);
 			}
 		}
 		
@@ -32,24 +32,24 @@ public class TenthousandViewer {
 	
 	public void updateButtons() {
 		if (model.nextIsPossible()) {
-			UIElement.next.setEnabled(true);
+			GameUIElement.next.setEnabled(true);
 		} else {
-			UIElement.next.setEnabled(false);
+			GameUIElement.next.setEnabled(false);
 		}
 		if (model.isPossibleToTakeOver()) {
-			UIElement.takeover.setEnabled(true);
+			GameUIElement.takeover.setEnabled(true);
 		} else {
-			UIElement.takeover.setEnabled(false);
+			GameUIElement.takeover.setEnabled(false);
 		}
 		if (model.isPossibleToMerge()) {
-			UIElement.merge.setEnabled(true);
+			GameUIElement.merge.setEnabled(true);
 		} else {
-			UIElement.merge.setEnabled(false);
+			GameUIElement.merge.setEnabled(false);
 		}
 		if (model.isPossibleToRoll()) {
-			UIElement.roll.setEnabled(true);
+			GameUIElement.roll.setEnabled(true);
 		} else {
-			UIElement.roll.setEnabled(false);
+			GameUIElement.roll.setEnabled(false);
 		}
 	}
 }

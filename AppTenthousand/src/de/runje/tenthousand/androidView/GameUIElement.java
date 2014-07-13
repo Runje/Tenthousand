@@ -1,12 +1,14 @@
 package de.runje.tenthousand.androidView;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import de.runje.tenthousand.R;
 
-public class UIElement {
+public class GameUIElement {
 
 	public static TextView[] players;
 	
@@ -14,8 +16,6 @@ public class UIElement {
 	
 	public static TextView points;
 	
-	public static Activity activity;
-
 	public static Button next;
 
 	public static Button takeover;
@@ -24,11 +24,14 @@ public class UIElement {
 
 	public static Button roll;
 	
-	public static void init(Activity a) {
-		activity = a;
-		players = new TextView[2];
+	public static ColorDrawable backgroundColor;
+
+	public static void init(Activity activity) {
+		players = new TextView[4];
 		players[0] = (TextView) activity.findViewById(R.id.textViewPlayer1);
 		players[1] = (TextView) activity.findViewById(R.id.textViewPlayer2);
+		players[2] = (TextView) activity.findViewById(R.id.textViewPlayer3);
+		players[3] = (TextView) activity.findViewById(R.id.textViewPlayer4);
 		
 		dices = new ImageView[5];
 		dices[0] = (ImageView) activity.findViewById(R.id.dice1);
@@ -44,5 +47,15 @@ public class UIElement {
 		roll = (Button) activity.findViewById(R.id.buttonRoll);
 		merge = (Button) activity.findViewById(R.id.buttonMerge);
 		
+		TextView tv = (TextView) activity.findViewById(R.id.fullscreen_content);
+		backgroundColor = (ColorDrawable)tv.getBackground();
+		
+	}
+
+	public static void disableButtons() {
+		next.setEnabled(false);
+		takeover.setEnabled(false);
+		roll.setEnabled(false);
+		merge.setEnabled(false);
 	}
 }

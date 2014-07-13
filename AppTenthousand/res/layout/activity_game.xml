@@ -17,7 +17,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:keepScreenOn="true"
-        android:text="@string/dummy_content"
+        android:text="@string/tenthousand"
         android:textColor="#33b5e5"
         android:textSize="50sp"
         android:textStyle="bold" />
@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:onClick="rollDice1"
+        android:onClick="switchDice1"
         android:src="@drawable/one" />
     
       <ImageView
@@ -43,7 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/dice1"
-        android:onClick="rollDice2"
+        android:onClick="switchDice2"
         android:src="@drawable/one" />
       
        <ImageView
@@ -52,7 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/dice2"
-        android:onClick="rollDice3"
+        android:onClick="switchDice3"
         android:src="@drawable/one" />
        
         <ImageView
@@ -61,7 +61,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/dice3"
-        android:onClick="rollDice4"
+        android:onClick="switchDice4"
         android:src="@drawable/one" />
         
          <ImageView
@@ -70,7 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/dice4"
-        android:onClick="rollDice5"
+        android:onClick="switchDice5"
         android:src="@drawable/one" />
          
           <TextView
@@ -93,6 +93,21 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/textViewPlayer1"
             android:text="Milena" />
+          
+          <TextView
+            android:id="@+id/textViewPlayer3"
+            android:layout_marginTop="50dp"
+            android:layout_below="@+id/textViewPlayer2"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:text="Chipmunk" />
+          
+          <TextView
+            android:id="@+id/textViewPlayer4"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewPlayer3"
+            android:text="Shark" />
           
            <Button
             android:id="@+id/buttonNext"
