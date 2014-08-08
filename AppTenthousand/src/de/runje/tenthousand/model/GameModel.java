@@ -14,7 +14,7 @@ public class GameModel extends Observable{
 	int indexPlayingPlayer = 0;
 	public boolean takeover;
 	public Dices dices;
-	private Rules rules;
+	public Rules rules;
 	private boolean finished;
 	public DiceHandler diceHandler;
 	public PlayerHandler playerHandler;

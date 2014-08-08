@@ -9,8 +9,8 @@
 
         <TextView
             android:id="@+id/fullscreen_content"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:gravity="center"
             android:keepScreenOn="true"
             android:text="@string/tenthousand"
@@ -19,26 +19,45 @@
             android:textStyle="bold" />
         
     <Button
-        android:id="@+id/buttonStart"
+        android:id="@+id/buttonShort"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/buttonNormal"
+        android:onClick="clickShort"
+        android:layout_alignTop="@+id/buttonNormal"
+        android:text="Short" />
+
+    <Button
+        android:id="@+id/buttonNormal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="false"
-        android:layout_marginTop="150dp"
-        android:onClick="clickStart"
-        android:text="Play" />
-
+        android:layout_marginTop="400sp"
+        android:onClick="clickNormal"
+        android:text="Normal" />
+    
+    <Button
+        android:id="@+id/buttonLong"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="clickLong"
+        android:layout_toRightOf="@+id/buttonNormal"
+        android:layout_alignTop="@+id/buttonNormal"
+        android:text="Long" />
+    
     <TextView
         android:id="@+id/textViewPlaying"
         android:layout_width="wrap_content"
+        android:textSize="@dimen/textSize"
         android:layout_height="wrap_content"
-        android:layout_marginTop="300dp"
         android:text="Playing" />
 
      <TextView
          android:id="@+id/textViewPlayer"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
+        android:textSize="@dimen/textSize"
          android:layout_alignTop="@id/textViewPlaying"
          android:layout_marginLeft="30dp"
          android:layout_toRightOf="@+id/textViewPlaying"
@@ -52,9 +71,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/textViewPlaying"
-        android:layout_marginLeft="150dp"
+        android:layout_marginLeft="90dp"
+        android:textSize="@dimen/textSize"
         android:layout_toRightOf="@+id/textViewPlayer1"
-        android:text="AI   " />
+        android:text="AI" />
 
       <CheckBox
         android:id="@+id/checkBoxPlaying1"
@@ -68,6 +88,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/checkBoxPlaying1"
         android:layout_alignLeft="@+id/textViewPlayer"
+        android:textSize="@dimen/textSize"
         android:onClick="clickEditPlayer"
         android:clickable="true"
         android:text="Thomas" />
@@ -91,6 +112,9 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/checkBoxPlaying2"
         android:layout_alignLeft="@+id/textViewPlayer"
+        android:textSize="@dimen/textSize"
+        android:clickable="true"
+        android:onClick="clickEditPlayer"
         android:text="Milena" />
     
         <CheckBox
@@ -110,8 +134,11 @@
         android:id="@+id/textViewPlayer3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="@dimen/textSize"
         android:layout_alignBaseline="@+id/checkBoxPlaying3"
         android:layout_alignLeft="@+id/textViewPlayer"
+        android:clickable="true"
+        android:onClick="clickEditPlayer"
         android:text="Chipmunk" />
     
         <CheckBox
@@ -131,8 +158,11 @@
         android:id="@+id/textViewPlayer4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="@dimen/textSize"
         android:layout_alignBaseline="@+id/checkBoxPlaying4"
         android:layout_alignLeft="@+id/textViewPlayer"
+        android:clickable="true"
+        android:onClick="clickEditPlayer"
         android:text="Shark" />
     
         <CheckBox
@@ -141,5 +171,7 @@
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/checkBoxAI3"
         android:layout_below="@+id/checkBoxAI3" />
+
 </RelativeLayout>
+
 

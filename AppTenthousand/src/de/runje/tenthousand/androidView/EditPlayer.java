@@ -1,44 +1,96 @@
 package de.runje.tenthousand.androidView;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
-import android.content.DialogInterface;
+import java.util.ArrayList;
+
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.widget.TextView;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ListView;
 import de.runje.tenthousand.R;
+import de.runje.tenthousand.statistics.DBHandler;
+import de.runje.tenthousand.statistics.DBPlayer;
 
-public class EditPlayer extends DialogFragment {
-	
-	private TextView tv;
-	public EditPlayer() {
-		//this.tv = tv;
-	}
+public class EditPlayer extends Activity {
+
+	ListView lv;
+	ArrayAdapter<String> adapter;
+	ArrayList<String> players = new ArrayList<String>();
+	private int index;
+
 	@Override
-	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		
-	AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-    // Get the layout inflater
-    LayoutInflater inflater = getActivity().getLayoutInflater();
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.edit_player);
 
-    // Inflate and set the layout for the dialog
-    // Pass null as the parent view because its going in the dialog layout
-    builder.setView(inflater.inflate(R.layout.edit_player, null))
-    // Add action buttons
-           .setPositiveButton("Change Name", new DialogInterface.OnClickListener() {
-               @Override
-               public void onClick(DialogInterface dialog, int id) {
-                   //this.tv.setText("Test");
-            	   // TODO
-               }
-           })
-           .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-               public void onClick(DialogInterface dialog, int id) {
-                   EditPlayer.this.getDialog().cancel();
-               }
-           });      
-    return builder.create();
+		Intent intent = getIntent();
+		index = intent.getIntExtra(MainActivity.PlayerToEdit, -1);
+
+		updateList();
+		for (String player : players) {
+			Log.d("EditPlayer", "Player: " + player);
+		}
+		lv = (ListView) findViewById(R.id.listViewPlayers);
+		adapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_list_item_1, players);
+		lv.setAdapter(adapter);
+
+		lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, final View view,
+					int position, long id) {
+				final String item = (String) parent.getItemAtPosition(position);
+				DBHandler db = new DBHandler(EditPlayer.this);
+				// reset old player
+				try {
+					DBPlayer p = db.getPlaying(index);
+					p.setPlaying(-1);
+					db.updatePlayer(p);
+					DBPlayer player = db.getPlayer(item);
+					player.setPlaying(index);
+					db.updatePlayer(player);
+
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				Intent intent = new Intent(EditPlayer.this, MainActivity.class);
+				startActivity(intent);
+			}
+		});
+
 	}
 
+	public void clickCancel(View v) {
+		// TODO: save players
+		Intent intent = new Intent(this, MainActivity.class);
+		startActivity(intent);
+	}
+
+	public void clickCreateNewPlayer(View v) {
+		EditText tv = (EditText) findViewById(R.id.editTextNewPlayer);
+
+		DBHandler db = new DBHandler(this);
+		if (!tv.getText().toString().isEmpty()) {
+			db.addPlayer(new DBPlayer(tv.getText().toString().trim(), -1, 0));
+		}
+
+		updateList();
+		adapter.notifyDataSetChanged();
+	}
+
+	public void updateList() {
+		DBHandler db = new DBHandler(this);
+		players.clear();
+		for (DBPlayer player : db.getAllPlayers()) {
+			players.add(player.getName());
+			Log.d("EditPlayer", player.getName());
+		}
+
+	}
 }

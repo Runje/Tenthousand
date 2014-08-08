@@ -49,7 +49,8 @@ public class GameActivity extends Activity implements IObserver {
 				ai[i] = intent.getBooleanExtra(MainActivity.IsAi[i], ai[i]);
 			}
 		}
-		initGame(players, ai);
+		int points = intent.getIntExtra(MainActivity.Points, 10000);
+		initGame(players, ai, points);
 	}
 
 	private void hideActionBar() {
@@ -64,7 +65,7 @@ public class GameActivity extends Activity implements IObserver {
 		
 	}
 
-	private void initGame(String[] player, boolean[] ai) {
+	private void initGame(String[] player, boolean[] ai, int points) {
 		ArrayList<Player> players = new ArrayList<Player>();
 		for (int i = 0; i < 4; i++) {
 			if (player[i] != null) {
@@ -84,7 +85,7 @@ public class GameActivity extends Activity implements IObserver {
 		
 		this.model = new GameModel(players, new Rules());
 		model.addObserver(this);
-
+		model.rules.WinPoints = points;
 		this.diceViewer = new DiceViewer(model);
 		this.tenthousandViewer = new TenthousandViewer(model);
 		update();
@@ -141,6 +142,11 @@ public class GameActivity extends Activity implements IObserver {
 				tenthousandViewer.updatePlayers();
 				tenthousandViewer.updateButtons();
 				GameUIElement.points.setText("Points: " + model.getPoints());
+				if (model.isGameFinished())
+				{
+					// Show popup dialog and save result in DB
+					// TODO
+				}
 			}
 		});
 	}

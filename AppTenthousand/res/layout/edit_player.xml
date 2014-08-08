@@ -3,25 +3,40 @@
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
-       <EditText
-        android:id="@+id/username"
-        android:inputType="textEmailAddress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginBottom="4dp"
-        android:hint="Something" />
+
     <EditText
-        android:id="@+id/password"
-        android:inputType="textPassword"
+        android:id="@+id/editTextNewPlayer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="40dp"
         android:fontFamily="sans-serif"
-        android:hint="Name"/>
+        android:hint="Name"
+        android:inputType="textCapWords" >
+
+        <requestFocus />
+    </EditText>
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="clickCancel"
+        android:text="Cancel" />
+
+    <Button
+        android:id="@+id/buttonNewPlayer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="clickCreateNewPlayer"
+        android:text="Create New Player" />
+
+    <ListView
+        android:id="@+id/listViewPlayers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </ListView>
+
 </LinearLayout>
