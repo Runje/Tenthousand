@@ -158,6 +158,20 @@ public class GameModel extends Observable{
 		
 		else return false;
 	}
+
+	public String getWinner() {
+		int max = 0;
+		String winner = "No winner";
+		for (Player player : players) {
+			if (player.getPoints() > max)
+			{
+				winner = player.getName();
+				max = player.getPoints();
+			}
+		}
+		// TODO what if two players have the same points?
+		return winner;
+	}
 	
 
 }

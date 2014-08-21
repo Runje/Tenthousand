@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.opengl.Visibility;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import de.runje.tenthousand.R;
 import de.runje.tenthousand.model.AIPlayer;
@@ -51,7 +52,12 @@ public class GameActivity extends Activity implements IObserver {
 		}
 		int points = intent.getIntExtra(MainActivity.Points, 10000);
 		initGame(players, ai, points);
+		setContentView(new GameLayout(this, players.length));
 	}
+
+	
+		
+		
 
 	private void hideActionBar() {
 		View decorView = getWindow().getDecorView();
@@ -145,7 +151,9 @@ public class GameActivity extends Activity implements IObserver {
 				if (model.isGameFinished())
 				{
 					// Show popup dialog and save result in DB
-					// TODO
+					FinishedDialog d = new FinishedDialog();
+					d.name = model.getWinner();
+					d.show(getFragmentManager(), "Game is finished");
 				}
 			}
 		});

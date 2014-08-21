@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="player1Rolls1" type="id"/>
+    <item name="player1Rolls2" type="id"/>
+    <item name="player1Rolls3" type="id"/>
+    <item name="player2Rolls1" type="id"/>
+    <item name="player2Rolls2" type="id"/>
+    <item name="player2Rolls3" type="id"/>
+        <item name="player3Rolls1" type="id"/>
+    <item name="player3Rolls2" type="id"/>
+    <item name="player3Rolls3" type="id"/>
+            <item name="player4Rolls1" type="id"/>
+    <item name="player4Rolls2" type="id"/>
+    <item name="player4Rolls3" type="id"/>
+    <item name="player1text" type="id"/>
+    <item name="player2text" type="id"/>
+    <item name="player3text" type="id"/>
+    <item name="player4text" type="id"/>
+    
+</resources>

@@ -108,7 +108,7 @@ public class MainActivity extends Activity {
 	}
 	
 	public void clickLong(View v) {
-		startGame(20000);
+		startGame(200);
 	}
 
 
