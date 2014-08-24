@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.opengl.Visibility;
 import android.os.Bundle;
@@ -25,7 +27,7 @@ import de.runje.tenthousand.util.SystemUiHider;
  * 
  * @see SystemUiHider
  */
-public class GameActivity extends Activity implements IObserver {
+public class GameActivity extends Activity implements IObserver, OnClickListener {
 
 	private DiceViewer diceViewer;
 	private TenthousandViewer tenthousandViewer;
@@ -38,7 +40,6 @@ public class GameActivity extends Activity implements IObserver {
 
 		setContentView(R.layout.activity_game);
 		hideActionBar();
-		GameUIElement.init(this);
 		
 		Intent intent = getIntent();
 		String[] players = new String[4];
@@ -51,8 +52,10 @@ public class GameActivity extends Activity implements IObserver {
 			}
 		}
 		int points = intent.getIntExtra(MainActivity.Points, 10000);
-		initGame(players, ai, points);
-		setContentView(new GameLayout(this, players.length));
+		GameModel model = initGame(players, ai, points);
+		setContentView(new GameLayout(this, model));
+		GameUIElement.init(this);
+		update();
 	}
 
 	
@@ -71,7 +74,7 @@ public class GameActivity extends Activity implements IObserver {
 		
 	}
 
-	private void initGame(String[] player, boolean[] ai, int points) {
+	private GameModel initGame(String[] player, boolean[] ai, int points) {
 		ArrayList<Player> players = new ArrayList<Player>();
 		for (int i = 0; i < 4; i++) {
 			if (player[i] != null) {
@@ -85,16 +88,14 @@ public class GameActivity extends Activity implements IObserver {
 			}
 			
 		}
-		for (int i = 0; i < 4 - players.size() ; i++) {
-			GameUIElement.players[3 - i].setVisibility(TextView.INVISIBLE);
-		}
+
 		
 		this.model = new GameModel(players, new Rules());
 		model.addObserver(this);
 		model.rules.WinPoints = points;
 		this.diceViewer = new DiceViewer(model);
 		this.tenthousandViewer = new TenthousandViewer(model);
-		update();
+		return model;
 	}
 
 
@@ -157,6 +158,16 @@ public class GameActivity extends Activity implements IObserver {
 				}
 			}
 		});
+	}
+
+
+
+
+
+	@Override
+	public void onClick(DialogInterface dialog, int which) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

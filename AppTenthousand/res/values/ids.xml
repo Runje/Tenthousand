@@ -17,5 +17,9 @@
     <item name="player2text" type="id"/>
     <item name="player3text" type="id"/>
     <item name="player4text" type="id"/>
+    <item name="player1Strike" type="id"/>
+    <item name="player2Strike" type="id"/>
+    <item name="player3Strike" type="id"/>
+    <item name="player4Strike" type="id"/>
     
 </resources>

@@ -4,6 +4,7 @@ import android.graphics.Color;
 import de.runje.tenthousand.controller.Action;
 import de.runje.tenthousand.controller.ActionHandler;
 import de.runje.tenthousand.model.GameModel;
+import de.runje.tenthousand.model.Player;
 
 public class TenthousandViewer {
 	
@@ -15,13 +16,24 @@ public class TenthousandViewer {
 	
 	public void updatePlayers() {
 		for (int i = 0; i < model.getPlayers().size(); i++) {
-			GameUIElement.players[i].setText(model.getPlayers().get(i).toString());
-			if (model.getPlayingPlayer() == model.getPlayers().get(i)) {
-				// highlight player which has the turn
-				GameUIElement.players[i].setBackgroundColor(Color.RED);
-			} else {
-				GameUIElement.players[i].setBackground(GameUIElement.backgroundColor);
+			Player p = model.getPlayers().get(i);
+			GameUIElement.players[i].setPoints(p.getPoints());
+			GameUIElement.players[i].setStrikes(p.getStrikes());
+			GameUIElement.players[i].setName(p.getName());
+			GameUIElement.players[i].setHighlighted(model.getPlayingPlayer() == model.getPlayers().get(i));
+			
+			int rolls = 0;
+			if (p.isFinished())
+			{
+				// Show no dices
+				rolls = 3;
 			}
+			else
+			{
+				rolls = p.getRolls();
+			}
+			
+			GameUIElement.players[i].setRolls(rolls);
 		}
 		
 	}

@@ -10,7 +10,7 @@ import de.runje.tenthousand.R;
 
 public class GameUIElement {
 
-	public static TextView[] players;
+	public static PlayerView[] players = new PlayerView[4];
 	
 	public static ImageView[] dices;
 	
@@ -24,15 +24,9 @@ public class GameUIElement {
 
 	public static Button roll;
 	
-	public static ColorDrawable backgroundColor;
+	//public static ColorDrawable backgroundColor;
 
 	public static void init(Activity activity) {
-		players = new TextView[4];
-		players[0] = (TextView) activity.findViewById(R.id.textViewPlayer1);
-		players[1] = (TextView) activity.findViewById(R.id.textViewPlayer2);
-		players[2] = (TextView) activity.findViewById(R.id.textViewPlayer3);
-		players[3] = (TextView) activity.findViewById(R.id.textViewPlayer4);
-		
 		dices = new ImageView[5];
 		dices[0] = (ImageView) activity.findViewById(R.id.dice1);
 		dices[1] = (ImageView) activity.findViewById(R.id.dice2);
@@ -47,8 +41,8 @@ public class GameUIElement {
 		roll = (Button) activity.findViewById(R.id.buttonRoll);
 		merge = (Button) activity.findViewById(R.id.buttonMerge);
 		
-		TextView tv = (TextView) activity.findViewById(R.id.fullscreen_content);
-		backgroundColor = (ColorDrawable)tv.getBackground();
+		//TextView tv = (TextView) activity.findViewById(R.id.fullscreen_content);
+		//backgroundColor = (ColorDrawable)tv.getBackground();
 		
 	}
 
