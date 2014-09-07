@@ -37,6 +37,13 @@
         </activity>
         
         <activity
+            android:name="de.runje.tenthousand.androidView.Tutorial"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="Tutorial"
+            android:theme="@style/FullscreenTheme" >
+        </activity>
+        
+        <activity
             android:name="de.runje.tenthousand.androidView.EditPlayer"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_game"

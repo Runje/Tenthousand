@@ -4,14 +4,13 @@ import java.util.ArrayList;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.Toast;
 import de.runje.tenthousand.R;
 import de.runje.tenthousand.model.AIPlayer;
 import de.runje.tenthousand.model.GameModel;
@@ -19,6 +18,7 @@ import de.runje.tenthousand.model.MyStrategy;
 import de.runje.tenthousand.model.Player;
 import de.runje.tenthousand.model.Rules;
 import de.runje.tenthousand.observer.IObserver;
+import de.runje.tenthousand.statistics.DBHandler;
 import de.runje.tenthousand.util.SystemUiHider;
 
 /**
@@ -27,7 +27,7 @@ import de.runje.tenthousand.util.SystemUiHider;
  * 
  * @see SystemUiHider
  */
-public class GameActivity extends Activity implements IObserver, OnClickListener {
+public class GameActivity extends Activity implements IObserver {
 
 	private DiceViewer diceViewer;
 	private TenthousandViewer tenthousandViewer;
@@ -56,6 +56,12 @@ public class GameActivity extends Activity implements IObserver, OnClickListener
 		setContentView(new GameLayout(this, model));
 		GameUIElement.init(this);
 		update();
+		Context context = getApplicationContext();
+		CharSequence text = "Goal of the game is to get " + points + " points.";
+		int duration = Toast.LENGTH_LONG;
+
+		Toast toast = Toast.makeText(context, text, duration);
+		toast.show();
 	}
 
 	
@@ -93,47 +99,12 @@ public class GameActivity extends Activity implements IObserver, OnClickListener
 		this.model = new GameModel(players, new Rules());
 		model.addObserver(this);
 		model.rules.WinPoints = points;
-		this.diceViewer = new DiceViewer(model);
+		this.diceViewer = new DiceViewer(model, this);
 		this.tenthousandViewer = new TenthousandViewer(model);
 		return model;
 	}
 
 
-	public void clickRoll(View v) {
-		diceViewer.roll();
-	}
-	
-	public void clickNext(View v) {
-		tenthousandViewer.next();
-	}
-	
-	public void clickTakeover(View v) {
-		diceViewer.takeover();
-	}
-	
-	public void clickMerge(View v)  {
-		diceViewer.merge();
-	}
-	
-	public void switchDice1(View v)  {
-		diceViewer.switchDice(0);
-	}
-	
-	public void switchDice2(View v)  {
-		diceViewer.switchDice(1);
-	}
-	
-	public void switchDice3(View v)  {
-		diceViewer.switchDice(2);
-	}
-	
-	public void switchDice4(View v)  {
-		diceViewer.switchDice(3);
-	}
-	
-	public void switchDice5(View v)  {
-		diceViewer.switchDice(4);
-	}
 
 
 	@Override
@@ -151,6 +122,13 @@ public class GameActivity extends Activity implements IObserver, OnClickListener
 				GameUIElement.points.setText("Points: " + model.getPoints());
 				if (model.isGameFinished())
 				{
+					DBHandler db = new DBHandler(getApplicationContext());
+					try {
+						db.updatePlayerFromGame(model);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					// Show popup dialog and save result in DB
 					FinishedDialog d = new FinishedDialog();
 					d.name = model.getWinner();
@@ -159,15 +137,4 @@ public class GameActivity extends Activity implements IObserver, OnClickListener
 			}
 		});
 	}
-
-
-
-
-
-	@Override
-	public void onClick(DialogInterface dialog, int which) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

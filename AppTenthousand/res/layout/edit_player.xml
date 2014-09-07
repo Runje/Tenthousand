@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 
     <EditText
         android:id="@+id/editTextNewPlayer"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:layout_marginLeft="4dp"
@@ -24,6 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="clickCancel"
+        android:layout_below="@+id/editTextNewPlayer"
         android:text="Cancel" />
 
     <Button
@@ -31,12 +32,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="clickCreateNewPlayer"
+        android:layout_below="@+id/button1"
         android:text="Create New Player" />
 
     <ListView
         android:id="@+id/listViewPlayers"
-        android:layout_width="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/buttonNewPlayer"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
     </ListView>
 
-</LinearLayout>
+</RelativeLayout>

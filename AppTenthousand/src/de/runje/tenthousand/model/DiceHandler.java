@@ -111,6 +111,44 @@ public class DiceHandler {
 		Logger.log(LogLevel.DEBUG, "DiceHandler", "Rolled dices: " + dices);
 		update();
 	}
+	
+	public void showRollDices(int i1, int i2, int i3, int i4, int i5)
+	{
+		// fix dices with points before roll
+		dices.fix();
+		allPoints += newPoints;
+		newPoints = 0;
+		if (dices.areAllFixed()) {
+			Logger.log(LogLevel.INFO, "Dices",
+					"All Dices are fixed. Resetting them...");
+			dices.reset();
+		}
+		ArrayList<Dice> d = dices.getDices();
+		if (i1 != 0)
+		{
+			d.get(0).setNumber(i1);
+		}
+		if (i2 != 0)
+		{
+			d.get(1).setNumber(i2);
+		}
+		if (i3 != 0)
+		{
+			d.get(2).setNumber(i3);
+		}
+		if (i4 != 0)
+		{
+			d.get(3).setNumber(i4);
+		}
+		if (i5 != 0)
+		{
+			d.get(4).setNumber(i5);
+		}
+		
+		Logger.log(LogLevel.DEBUG, "DiceHandler", "Rolled dices: " + dices);
+		update();
+		
+	}
 
 	/**
 	 * Updates the member valuePairs and the states of the dices

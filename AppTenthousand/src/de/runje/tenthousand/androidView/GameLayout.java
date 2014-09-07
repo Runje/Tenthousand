@@ -15,8 +15,8 @@ import de.runje.tenthousand.model.GameModel;
 
 public class GameLayout extends RelativeLayout implements View.OnClickListener {
 
-	private Context context;
-	private GameModel model;
+	protected Context context;
+	protected GameModel model;
 
 	public GameLayout(Context context, GameModel model) {
 		super(context);
@@ -71,7 +71,7 @@ public class GameLayout extends RelativeLayout implements View.OnClickListener {
 		return l;
 	}
 
-	private LayoutParams createLayoutParam()
+	protected LayoutParams createLayoutParam()
 	{
 		return new LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 	}
@@ -218,12 +218,13 @@ public class GameLayout extends RelativeLayout implements View.OnClickListener {
 		layout.addView(merge, paramsMerge);
 		layout.addView(takeover, paramsTakeover);
 		layout.addView(roll, paramsRoll);
+		layout.setId(R.id.buttons);
 		return layout;
 	}
 
 	@Override
 	public void onClick(View v) {
-		DiceViewer diceViewer = new DiceViewer(model);
+		DiceViewer diceViewer = new DiceViewer(model, context);
 		TenthousandViewer tenthousandViewer = new TenthousandViewer(model);
 		switch (v.getId()) {
 		case R.id.buttonRoll:

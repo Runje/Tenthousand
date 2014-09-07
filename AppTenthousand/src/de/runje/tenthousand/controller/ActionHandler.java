@@ -60,6 +60,7 @@ public class ActionHandler {
 	}
 	
 	private void executeNext(GameModel model) {
+		Player player = model.getPlayingPlayer();
 		model.getPlayingPlayer().setFinished(true);
 		int points = model.diceHandler.getAllPoints() + model.diceHandler.getNewPoints();
 		if (points < Rules.MinPoints) {
@@ -77,9 +78,15 @@ public class ActionHandler {
 			model.dices.fix();
 			model.takeover = true;
 			model.playerHandler.resetStrikes(model.getPlayingPlayer());
+			
+			if (player.getMaxPointsTurn() < points)
+			{
+				player.setMaxPointsTurn(points);
+			}
 		}
 		
 		model.getPlayingPlayer().setRolls(0);
+		model.getPlayingPlayer().increaseTotalTurns();
 		model.nextPlayer();
 		model.notifyObservers();
 		model.handleNextPlayer();

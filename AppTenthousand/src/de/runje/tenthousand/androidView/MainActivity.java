@@ -38,10 +38,10 @@ public class MainActivity extends Activity {
 		
 		DBHandler db = new DBHandler(this);
 //		db.onUpgrade(db.getWritableDatabase(), 0, 1);
-//		db.addPlayer(new DBPlayer("Milena", 0, 0));
-//		db.addPlayer(new DBPlayer("Thomas", 1, 0));
-//		db.addPlayer(new DBPlayer("Gisela", 2, 0));
-//		db.addPlayer(new DBPlayer("Wolfgang", 3, 0));
+//		db.addPlayer(new DBPlayer("Mario", 0));
+//		db.addPlayer(new DBPlayer("Patrick", 1));
+//		db.addPlayer(new DBPlayer("Gisela", 2));
+//		db.addPlayer(new DBPlayer("Wolfgang", 3));
 		updatePlayers();
 	
 		db.logAllPlayers();
@@ -98,6 +98,11 @@ public class MainActivity extends Activity {
 		}
 	}
 	
+	public void clickTutorial(View v)
+	{
+		Intent intent = new Intent(this, Tutorial.class);
+		startActivity(intent);
+	}
 
 	public void clickShort(View v) {
 		startGame(5000);

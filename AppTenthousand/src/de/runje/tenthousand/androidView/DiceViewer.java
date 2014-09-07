@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.ColorFilter;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
@@ -16,6 +18,7 @@ import de.runje.tenthousand.R;
 import de.runje.tenthousand.controller.Action;
 import de.runje.tenthousand.controller.ActionHandler;
 import de.runje.tenthousand.model.Dice;
+import de.runje.tenthousand.model.DiceState;
 import de.runje.tenthousand.model.GameModel;
 
 public class DiceViewer {
@@ -23,8 +26,10 @@ public class DiceViewer {
 	private Callback callback;
 	private Timer timer = new Timer();
 	private GameModel model;
+	private Context context;
 
-	public DiceViewer(GameModel model) {
+	public DiceViewer(GameModel model, Context context) {
+		this.context = context;
 		this.model = model;
 		callback = createCallback();
 		handler = new Handler(callback);
@@ -35,7 +40,6 @@ public class DiceViewer {
 			@Override
 			public boolean handleMessage(Message msg) {
 				int dice = msg.what;
-				Log.d("Callback", "dice = " + dice);
 				Dice d = new Dice(0);
 				int n = d.roll();
 				showDice(dice, n);
@@ -100,7 +104,6 @@ public class DiceViewer {
 	}
 
 	public void animateRollDice(final int dice) {
-		Log.d("D", "dice = " + dice);
 		for (int i = 0; i < 10; i++) {
 
 			timer.schedule(new TimerTask() {
@@ -119,6 +122,7 @@ public class DiceViewer {
 		GameUIElement.disableButtons();
 		boolean rollAll = false;
 		if (model.resetDices()) {
+			Log.d("RESET", "DICES " + model.dices.getDices());
 			rollAll = true;
 		}
 		ArrayList<Dice> dices = model.dices.getDices();
@@ -175,5 +179,59 @@ public class DiceViewer {
 		Action action = Action.Switch;
 		action.index = i;
 		new ActionHandler().executeAction(action, model);
+	}
+
+	public void showRoll(final int dice1, final int dice2, final int dice3, final int dice4, final int dice5) {
+		model.dices.fix();
+		// animate roll
+		animateRollFreeDices();
+		// roll
+		timer.schedule(new TimerTask() {
+
+			@Override
+			public void run() {
+				model.diceHandler.showRollDices(dice1, dice2, dice3, dice4, dice5);
+				model.getPlayingPlayer().setRolls(model.getPlayingPlayer().getRolls() + 1);
+				model.diceHandler.update();
+				model.notifyObservers();
+			}
+		}, 10 * 100);
+	}
+	
+	public void setDice(int index, int number, DiceState state)
+	{
+		Dice d = model.dices.getDices().get(index);
+		d.setNumber(number);
+		d.setState(state);
+		model.diceHandler.update();
+		model.notifyObservers();
+	}
+	
+	public void setDice(int index, int number)
+	{
+		setDice(index, number, DiceState.NO_POINTS);
+	}
+
+	public void showRollDice5(final int i) {
+		model.dices.fix();
+		// animate roll
+		animateRollFreeDices();
+		// roll
+		timer.schedule(new TimerTask() {
+
+			@Override
+			public void run() {
+				Activity a = (Activity) context;
+				a.runOnUiThread(new Runnable() {
+				     @Override
+				     public void run() {
+				    	 model.diceHandler.showRollDices(0, 0, 0, 0, i);
+				    	 model.diceHandler.update();
+				    	 model.notifyObservers();
+				    }
+				});
+			}
+		}, 10 * 100);
+		
 	}
 }

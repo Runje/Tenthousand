@@ -77,7 +77,7 @@ public class EditPlayer extends Activity {
 
 		DBHandler db = new DBHandler(this);
 		if (!tv.getText().toString().isEmpty()) {
-			db.addPlayer(new DBPlayer(tv.getText().toString().trim(), -1, 0));
+			db.addPlayer(new DBPlayer(tv.getText().toString().trim(), -1));
 		}
 
 		updateList();

@@ -25,6 +25,70 @@ public class Player {
 	
 	private int rolls;
 	
+	private int totalRolls = 0;
+	
+	private int totalTurns = 0;
+	
+	private int maxPointsRoll = 0;
+	
+	private int maxPointsTurn = 0;
+	
+	/**
+	 * @return the totalRolls
+	 */
+	public int getTotalRolls() {
+		return totalRolls;
+	}
+
+	/**
+	 * @param totalRolls the totalRolls to set
+	 */
+	public void increaseTotalRolls() {
+		this.totalRolls++;
+	}
+
+	/**
+	 * @return the totalTurns
+	 */
+	public int getTotalTurns() {
+		return totalTurns;
+	}
+
+	/**
+	 * @param totalTurns the totalTurns to set
+	 */
+	public void increaseTotalTurns() {
+		this.totalTurns++;;
+	}
+
+	/**
+	 * @return the maxPointsRoll
+	 */
+	public int getMaxPointsRoll() {
+		return maxPointsRoll;
+	}
+
+	/**
+	 * @param maxPointsRoll the maxPointsRoll to set
+	 */
+	public void setMaxPointsRoll(int maxPointsRoll) {
+		this.maxPointsRoll = maxPointsRoll;
+	}
+
+	/**
+	 * @return the maxPointsTurn
+	 */
+	public int getMaxPointsTurn() {
+		return maxPointsTurn;
+	}
+
+	/**
+	 * @param maxPointsTurn the maxPointsTurn to set
+	 */
+	public void setMaxPointsTurn(int maxPointsTurn) {
+		this.maxPointsTurn = maxPointsTurn;
+	}
+
 	/**
 	 * Flag to determine if players turn is finished
 	 */

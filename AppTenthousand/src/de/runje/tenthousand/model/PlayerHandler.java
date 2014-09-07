@@ -31,8 +31,10 @@ public class PlayerHandler {
 		diceHandler.rollDices();
 		player.setRolls(player.getRolls() + 1);
 		Logger.log(LogLevel.INFO, "Player", player.getName() + " rolls the dices for the " + player.getRolls() + ". time.");
+		player.increaseTotalRolls();
 		checkIfFinished(player);
 	}
+	
 	
 	public void checkIfFinished(Player player) {
 		if (diceHandler.getNewPoints() == 0) {

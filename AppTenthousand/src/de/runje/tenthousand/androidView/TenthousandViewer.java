@@ -1,6 +1,6 @@
 package de.runje.tenthousand.androidView;
 
-import android.graphics.Color;
+import android.widget.ImageView;
 import de.runje.tenthousand.controller.Action;
 import de.runje.tenthousand.controller.ActionHandler;
 import de.runje.tenthousand.model.GameModel;
@@ -62,6 +62,10 @@ public class TenthousandViewer {
 			GameUIElement.roll.setEnabled(true);
 		} else {
 			GameUIElement.roll.setEnabled(false);
+		}
+		
+		for (ImageView dices : GameUIElement.dices) {
+			dices.setEnabled(true);
 		}
 	}
 }

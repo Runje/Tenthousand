@@ -21,5 +21,6 @@
     <item name="player2Strike" type="id"/>
     <item name="player3Strike" type="id"/>
     <item name="player4Strike" type="id"/>
+    <item name="buttons" type="id"/>
     
 </resources>

@@ -51,5 +51,28 @@ public class GameUIElement {
 		takeover.setEnabled(false);
 		roll.setEnabled(false);
 		merge.setEnabled(false);
+		
+		for (ImageView image : dices) {
+			image.setEnabled(false);
+		}
+	}
+
+	public static void enableMerge() {
+		merge.setEnabled(true);
+	}
+	public static void enableNext() {
+		next.setEnabled(true);
+	}
+	public static void enableTakeover() {
+		takeover.setEnabled(true);
+	}
+	public static void enableRoll() {
+		roll.setEnabled(true);
+	}
+
+	public static void enableSwitch() {
+		for (ImageView image : dices) {
+			image.setEnabled(true);
+		}
 	}
 }

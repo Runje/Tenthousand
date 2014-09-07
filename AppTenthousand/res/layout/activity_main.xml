@@ -46,6 +46,15 @@
         android:layout_alignTop="@+id/buttonNormal"
         android:text="Long" />
     
+    <Button
+        android:id="@+id/buttonTutorial"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/buttonNormal"
+        android:layout_centerHorizontal="true"
+        android:onClick="clickTutorial"
+        android:text="Tutorial" />
+    
     <TextView
         android:id="@+id/textViewPlaying"
         android:layout_width="wrap_content"

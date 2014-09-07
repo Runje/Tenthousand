@@ -2,6 +2,8 @@ package de.runje.tenthousand.statistics;
 
 import java.util.ArrayList;
 
+import de.runje.tenthousand.model.GameModel;
+import de.runje.tenthousand.model.Player;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -25,9 +27,18 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String KEY_NAME = "name";
     private static final String KEY_GAMES = "games";
     private static final String KEY_PLAYING = "playing";
+    private static final String KEY_WINS = "wins";
+    private static final String KEY_MAX_TURN = "maxPointsTurn";
+    private static final String KEY_MAX_ROLL = "maxPointsRoll";
+    private static final String KEY_MAX_GAME = "maxPointsGame";
+    private static final String KEY_MIN_ROLLS = "minRollsToWin";
+    private static final String KEY_MIN_TURNS = "minTurnsToWin";
     private static final String CREATE_PLAYERS_TABLE = "CREATE TABLE " + TABLE_PLAYERS + "("
             + KEY_NAME + " TEXT," + KEY_PLAYING + " INT,"
-            + KEY_GAMES + " INT" + ")";
+            + KEY_GAMES + " INT," + KEY_WINS + " INT," + KEY_MAX_TURN + " INT," + 
+            KEY_MAX_ROLL+ " INT," + KEY_MAX_GAME + " INT," + KEY_MIN_ROLLS + " INT," + KEY_MIN_TURNS + " INT" + ");";
+    private static final String[] Player = new String[] { 
+        KEY_NAME, KEY_PLAYING, KEY_GAMES, KEY_WINS, KEY_MAX_TURN, KEY_MAX_ROLL, KEY_MAX_GAME, KEY_MIN_ROLLS, KEY_MIN_TURNS };
  
     public DBHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -36,8 +47,6 @@ public class DBHandler extends SQLiteOpenHelper {
     // Creating Tables
     @Override
     public void onCreate(SQLiteDatabase db) {
-    	
-        
         db.execSQL(CREATE_PLAYERS_TABLE);
     }
  
@@ -76,7 +85,6 @@ public class DBHandler extends SQLiteOpenHelper {
     	c.close();
     	
         ContentValues values = PlayerToValues(player); 
-     // TODO: only add if not exist
         // Inserting Row
         db.insert(TABLE_PLAYERS, null, values);
         db.close(); // Closing database connection
@@ -85,8 +93,14 @@ public class DBHandler extends SQLiteOpenHelper {
 	private ContentValues PlayerToValues(DBPlayer player) {
 		ContentValues values = new ContentValues();
         values.put(KEY_NAME, player.getName()); 
-        values.put(KEY_GAMES, player.getGames()); 
         values.put(KEY_PLAYING, player.getPlaying());
+        values.put(KEY_GAMES, player.getGames()); 
+        values.put(KEY_WINS, player.getWins());
+        values.put(KEY_MAX_TURN, player.getMaxPointsTurn());
+        values.put(KEY_MAX_ROLL, player.getMaxPointsRoll());
+        values.put(KEY_MAX_GAME, player.getMaxPointsGame());
+        values.put(KEY_MIN_ROLLS, player.getMinRolls());
+        values.put(KEY_MIN_TURNS, player.getMinTurns());
 		return values;
 	}
     
@@ -94,14 +108,12 @@ public class DBHandler extends SQLiteOpenHelper {
     {
     	SQLiteDatabase db = this.getReadableDatabase();
     	 
-        Cursor cursor = db.query(TABLE_PLAYERS, new String[] { 
-                KEY_NAME, KEY_PLAYING, KEY_GAMES }, KEY_NAME + "=?",
+        Cursor cursor = db.query(TABLE_PLAYERS, Player, KEY_NAME + "=?",
                 new String[] { name }, null, null, null, null);
         if (cursor != null)
         {
 	            cursor.moveToFirst();
-	            return new DBPlayer(
-	                cursor.getString(0), cursor.getInt(1), cursor.getInt(2));
+	            return createPlayerFromCursor(cursor);
         }
         else
         {
@@ -123,8 +135,7 @@ public class DBHandler extends SQLiteOpenHelper {
     	{
     		do
     		{
-    			DBPlayer player = new DBPlayer(
-    	                cursor.getString(0), cursor.getInt(1), cursor.getInt(2));
+    			DBPlayer player = createPlayerFromCursor(cursor);
     			players.add(player);
     		} while (cursor.moveToNext());
     	}
@@ -134,8 +145,6 @@ public class DBHandler extends SQLiteOpenHelper {
 
 	public void CreatePlayers() {
 		SQLiteDatabase db = this.getWritableDatabase();
-		
-		
         db.execSQL(CREATE_PLAYERS_TABLE);
 	}
 
@@ -156,22 +165,36 @@ public class DBHandler extends SQLiteOpenHelper {
 		}
 	}
 
+	public DBPlayer createPlayerFromCursor(Cursor cursor)
+	{
+		return new DBPlayer(
+                cursor.getString(0), cursor.getInt(1), cursor.getInt(2), cursor.getInt(3), cursor.getInt(4), cursor.getInt(5), cursor.getInt(6), cursor.getInt(7), cursor.getInt(8));
+	}
 	public DBPlayer getPlaying(int index) throws Exception {
 		SQLiteDatabase db = this.getReadableDatabase();
    	 
-        Cursor cursor = db.query(TABLE_PLAYERS, new String[] { 
-                KEY_NAME, KEY_PLAYING, KEY_GAMES }, KEY_PLAYING + "=?",
+        Cursor cursor = db.query(TABLE_PLAYERS, Player, KEY_PLAYING + "=?",
                 new String[] { String.valueOf(index) }, null, null, null, null);
         if (cursor != null)
         {
 	            cursor.moveToFirst();
-	            return new DBPlayer(
-	                cursor.getString(0), cursor.getInt(1), cursor.getInt(2));
+	            return createPlayerFromCursor(cursor);
         }
         else
         {
         	Log.d("DBHandler", index + " is not in DB.");
         	throw new Exception();
         }
+	}
+	
+	public void updatePlayerFromGame(GameModel model) throws Exception
+	{
+		for (Player player : model.getPlayers()) {
+			DBPlayer dbPlayer = getPlayer(player.getName());
+			dbPlayer.setGames(dbPlayer.getGames() + 1);
+			updatePlayer(dbPlayer);
+			
+			// TODO: rest
+		}
 	}
 }
