@@ -31,7 +31,7 @@ public class GameActivity extends Activity implements IObserver {
 
 	private DiceViewer diceViewer;
 	private TenthousandViewer tenthousandViewer;
-
+	private boolean handledFinish = false;
 	private GameModel model;
 
 	@Override
@@ -113,6 +113,8 @@ public class GameActivity extends Activity implements IObserver {
 		runOnUiThread(new Runnable() {
 			
 
+
+
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
@@ -120,18 +122,22 @@ public class GameActivity extends Activity implements IObserver {
 				tenthousandViewer.updatePlayers();
 				tenthousandViewer.updateButtons();
 				GameUIElement.points.setText("Points: " + model.getPoints());
-				if (model.isGameFinished())
+				if (model.isGameFinished() && !handledFinish)
 				{
 					DBHandler db = new DBHandler(getApplicationContext());
 					try {
 						db.updatePlayerFromGame(model);
+						handledFinish = true;
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+					
+					
 					// Show popup dialog and save result in DB
 					FinishedDialog d = new FinishedDialog();
 					d.name = model.getWinner();
+					
 					d.show(getFragmentManager(), "Game is finished");
 				}
 			}

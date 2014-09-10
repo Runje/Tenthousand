@@ -68,9 +68,6 @@ public class TutorialLayout extends GameLayout {
 			{
 				diceViewer.showRoll(2,3,4,6,6);
 				showTextAfterRoll("If you score no points you loose all your points so far in this turn and get one strike. If you have three strikes in a row, you loose all your points in the entire game.");
-				Player robin = model.getPlayerByName("Robin");
-//				robin.setStrikes(1);
-//				robin.setAllPoints(0);
 				model.diceHandler.setAllPoints(0);
 				model.diceHandler.setNewPoints(0);
 				OnlyNextPossible();

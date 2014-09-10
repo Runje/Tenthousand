@@ -194,7 +194,16 @@ public class DBHandler extends SQLiteOpenHelper {
 			dbPlayer.setGames(dbPlayer.getGames() + 1);
 			updatePlayer(dbPlayer);
 			
+			Log.d("Update", dbPlayer.toString());
+			
 			// TODO: rest
 		}
+		
+		// Winner
+		Player player = model.getPlayerByName(model.getWinner());
+		DBPlayer dbPlayer = getPlayer(player.getName());
+		dbPlayer.setWins(dbPlayer.getWins() + 1);
+		updatePlayer(dbPlayer);
+		
 	}
 }

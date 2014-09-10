@@ -55,6 +55,15 @@
         android:onClick="clickTutorial"
         android:text="Tutorial" />
     
+    <Button
+        android:id="@+id/buttonStatistics"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/buttonTutorial"
+        android:layout_centerHorizontal="true"
+        android:onClick="clickStatistics"
+        android:text="Statistics" />
+    
     <TextView
         android:id="@+id/textViewPlaying"
         android:layout_width="wrap_content"

@@ -115,6 +115,12 @@ public class MainActivity extends Activity {
 	public void clickLong(View v) {
 		startGame(200);
 	}
+	
+	public void clickStatistics(View v)
+	{
+ 	   Intent intent = new Intent(this, StatisticActivity.class);
+ 	   startActivity(intent);
+	}
 
 
 	private void startGame(int points) {

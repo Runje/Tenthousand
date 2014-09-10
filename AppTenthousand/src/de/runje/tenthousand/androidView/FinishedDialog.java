@@ -23,17 +23,11 @@ public class FinishedDialog extends DialogFragment {
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         
-        DBHandler db = new DBHandler(getActivity());
-        ArrayList<DBPlayer> players = db.getAllPlayers();
-        String p = "";
-        for (DBPlayer dbPlayer : players) {
-			
-        	p += dbPlayer.toString() + "\n";
-		}
-        builder.setMessage(name + " wins the game." + p)
+        builder.setMessage(name + " wins the game.")
                .setPositiveButton("Show Statistics", new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int id) {
-                       // TODO: Show statistics
+                	   Intent intent = new Intent(((Dialog) dialog).getContext(), StatisticActivity.class);
+                	   startActivity(intent);
                    }
                })
                .setNegativeButton("Back to Menu", new DialogInterface.OnClickListener() {
