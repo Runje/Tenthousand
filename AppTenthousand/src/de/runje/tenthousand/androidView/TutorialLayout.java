@@ -4,7 +4,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.View;
 import android.view.ViewManager;
@@ -18,12 +22,12 @@ import de.runje.tenthousand.model.Player;
 public class TutorialLayout extends GameLayout {
 
 	public int step = 0;
-	public int maxSteps = 4;
+	public int maxSteps = 5;
 	private Timer timer = new Timer();
 	public TutorialLayout(final Context context, GameModel model) {
 		super(context, model);
 		showTextAfterRoll("Welcome to the Tutorial! \n"
-				+ "Goal of this game is to achieve 1000 Points \n"
+				+ "Goal of this game is to achieve 10000 Points \n"
 				+ "Press Roll to roll the dices");
 	}
 	
@@ -64,13 +68,22 @@ public class TutorialLayout extends GameLayout {
 			{
 				diceViewer.showRoll(2,3,4,6,6);
 				showTextAfterRoll("If you score no points you loose all your points so far in this turn and get one strike. If you have three strikes in a row, you loose all your points in the entire game.");
+				Player robin = model.getPlayerByName("Robin");
+//				robin.setStrikes(1);
+//				robin.setAllPoints(0);
+				model.diceHandler.setAllPoints(0);
+				model.diceHandler.setNewPoints(0);
 				OnlyNextPossible();
 				step++;
 			}
 			else if (step == 3)
 			{
 				diceViewer.showRoll(2,2,2,6,6);
-				showTextAfterRoll("It is now Wolfangs turn. But he can't takeover the dices, because Robin didn't score.");
+				showTextAfterRoll("2,2,2 = 200 P \n"
+						+ "6,6,6 = 600 P \n"
+						+ "but 1,1,1 = 1000 P \n"
+						+ "You can also decide to rethrow dices with points \n"
+						+ "click on one of the twos to rethrow them");
 				OnlySwitchPossible();
 				step++;
 			}
@@ -96,12 +109,27 @@ public class TutorialLayout extends GameLayout {
 
 			if (step == 3)
 			{
-				showTextAfterRoll("The left rolls for the turn are show below the player name \n"
-						+ "Below that you can see the strikes.");
 				Player robin = model.getPlayerByName("Robin");
-				robin.setStrikes(1);
-				robin.setAllPoints(0);
+//				robin.setStrikes(1);
+//				robin.setAllPoints(0);
+				showTextAfterRoll("It is now Wolfangs turn. But he can't takeover the dices, because Robin didn't score.");
 				OnlyRollPossible();
+			}
+			if (step == 5)
+			{
+				AlertDialog.Builder builder = new AlertDialog.Builder(context);
+				// Add the buttons
+				builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				           public void onClick(DialogInterface dialog, int id) {
+				        	   Intent intent = new Intent(((Dialog) dialog).getContext(), MainActivity.class);
+		                	   context.startActivity(intent);
+				           }
+				       });
+				builder.setMessage("You can now start your own game");
+				builder.setTitle("Tutorial is finished");
+				// Create the AlertDialog
+				AlertDialog dialog = builder.create();
+				dialog.show();
 			}
 			
 			break;
@@ -121,7 +149,7 @@ public class TutorialLayout extends GameLayout {
 			{
 				model.getPlayingPlayer().setWillTakeOver(true);
 				model.dices.fix();
-				diceViewer.showRollDice5(1);
+				diceViewer.showRoll(0,0,0,0,1);
 				showTextAfterRoll("If you scored points with all dices, you have again three rolls with five new dices.");
 				OnlyRollPossible();
 				step++;
@@ -157,11 +185,8 @@ public class TutorialLayout extends GameLayout {
 	
 	private void afterSwitch()
 	{
-		showTextAfterRoll("2,2,2 = 200 P \n"
-				+ "6,6,6 = 600 P \n"
-				+ "but 1,1,1 = 1000 P \n"
-				+ "You can also decide to rethrow dices with points \n"
-				+ "click on one of the twos to rethrow them");
+		showTextAfterRoll("The rolls left for the turn are shown below the players name \n"
+					+ "Below that you can see the strikes.");
 		OnlyRollPossible();
 	}
 	

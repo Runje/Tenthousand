@@ -17,9 +17,12 @@ import android.widget.ImageView;
 import de.runje.tenthousand.R;
 import de.runje.tenthousand.controller.Action;
 import de.runje.tenthousand.controller.ActionHandler;
+import de.runje.tenthousand.logger.LogLevel;
+import de.runje.tenthousand.logger.Logger;
 import de.runje.tenthousand.model.Dice;
 import de.runje.tenthousand.model.DiceState;
 import de.runje.tenthousand.model.GameModel;
+import de.runje.tenthousand.model.Player;
 
 public class DiceViewer {
 	Handler handler;
@@ -190,6 +193,16 @@ public class DiceViewer {
 
 			@Override
 			public void run() {
+				Player player = model.getPlayingPlayer();
+				if (player.getRolls() == 0 && !player.willTakeOver()) {
+					model.diceHandler.resetAll();
+				} else if (player.getRolls() == 0){
+					player.setWillTakeOver(false);
+				}
+				if (model.diceHandler.dices.areAllFixed()) {
+					player.setRolls(0);
+					model.diceHandler.dices.reset();
+				}
 				model.diceHandler.showRollDices(dice1, dice2, dice3, dice4, dice5);
 				model.getPlayingPlayer().setRolls(model.getPlayingPlayer().getRolls() + 1);
 				model.diceHandler.update();
@@ -212,26 +225,5 @@ public class DiceViewer {
 		setDice(index, number, DiceState.NO_POINTS);
 	}
 
-	public void showRollDice5(final int i) {
-		model.dices.fix();
-		// animate roll
-		animateRollFreeDices();
-		// roll
-		timer.schedule(new TimerTask() {
 
-			@Override
-			public void run() {
-				Activity a = (Activity) context;
-				a.runOnUiThread(new Runnable() {
-				     @Override
-				     public void run() {
-				    	 model.diceHandler.showRollDices(0, 0, 0, 0, i);
-				    	 model.diceHandler.update();
-				    	 model.notifyObservers();
-				    }
-				});
-			}
-		}, 10 * 100);
-		
-	}
 }

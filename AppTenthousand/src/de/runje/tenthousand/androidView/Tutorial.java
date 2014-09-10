@@ -45,7 +45,7 @@ public class Tutorial extends Activity implements IObserver {
 		GameUIElement.init(this);
 		update();
 		Context context = getApplicationContext();
-		CharSequence text = "Goal of the game is to get " + 1000 + " points.";
+		CharSequence text = "Goal of the game is to get " + 10000 + " points.";
 		int duration = Toast.LENGTH_LONG;
 
 		Toast toast = Toast.makeText(context, text, duration);
@@ -56,10 +56,6 @@ public class Tutorial extends Activity implements IObserver {
 	}
 	
 
-	private void showWelcomeDialog() {
-		showOKDialog("Goal of the game", "Welcome to the Tutorial! \n Bla bla");
-		step++;
-	}
 	
 	private void showOKDialog(String title, String message)
 	{
@@ -121,7 +117,7 @@ public class Tutorial extends Activity implements IObserver {
 		
 		this.model = new GameModel(players, new Rules());
 		model.addObserver(this);
-		Rules.WinPoints = 1000;
+		Rules.WinPoints = 10000;
 		this.diceViewer = new DiceViewer(model, this);
 		this.tenthousandViewer = new TenthousandViewer(model);
 		return model;
